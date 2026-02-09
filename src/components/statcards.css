@@ -1,0 +1,50 @@
+.stats-container {
+  display: flex;
+  justify-content: center; /* Keeps the cards centered */
+  align-items: center;
+  gap: 15px; /* Adjust spacing between cards */
+  padding: 10px;
+  margin: 0 auto;
+}
+
+.stat-card {
+  /* Control the width of the card */
+  width: 190px; 
+  height: 50px; /* Reduced height */
+  
+  background-color: #2d3a3a;
+  border-radius: 20px; /* Rounded corners */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  transition: transform 0.2s ease;
+}
+
+.stat-label {
+  font-family:'Calibri', 'serif'; /* Match your logo style */
+  font-size: 0.55rem; /* Very small labels as seen in image */
+  text-transform: uppercase;
+  color: #8ba08e;
+  letter-spacing: 1px;
+  margin-bottom: 2px;
+}
+
+.stat-value {
+  font-family: 'Calibri', 'serif';
+  font-size: 1.8rem; /* Large enough to be the focal point */
+  font-weight: 800;
+  line-height: 1;
+}
+
+/* Colors based on your screenshots */
+.stat-card.total .stat-value { color: #ffffff; }
+.stat-card.pending .stat-value { color: #f2994a; } /* Orange */
+.stat-card.completed .stat-value { color:  #8ba08e; } /* Sage Green */
+.stat-card.canceled .stat-value { color: #eb5757; }
+
+/* Remove the specific background from your previous class if it was overwriting */
+.stat-card {
+  border-right: none !important;
+}

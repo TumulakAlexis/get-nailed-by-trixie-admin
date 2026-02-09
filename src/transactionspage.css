@@ -1,0 +1,125 @@
+.transactions-container {
+  padding: 30px;
+  background-color: #f4f7f6;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Header Cards */
+.trans-header {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.summary-card {
+  padding: 25px;
+  border-radius: 24px;
+  flex: 1;
+}
+
+.summary-card.dark {
+  background-color: #2E403D;
+  color: #48C78E; /* Light green for the currency */
+}
+
+.summary-card.light {
+  background-color: #fff;
+  color: #2D3A3A;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.summary-card span {
+  font-size: 0.9rem;
+  font-weight: 600;
+  opacity: 0.8;
+}
+
+/* List Layout */
+.trans-content-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px;
+}
+
+.main-log-section {
+  background: white;
+  border-radius: 24px;
+  padding: 25px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.log-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.trans-search {
+  padding: 10px 15px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  width: 250px;
+}
+
+/* Individual Item (Reference: Image Right Sidebar) */
+.trans-item {
+  display: flex;
+  align-items: center;
+  text-align: start;
+  padding: 15px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.trans-icon-block {
+  width: 45px;
+  height: 45px;
+  background-color: #2E403D;
+  border-radius: 12px;
+  margin-right: 15px;
+}
+
+.trans-details h3 {
+  font-size: 0.95rem;
+  margin: 0;
+  color: #2D3A3A;
+}
+
+.trans-details p {
+  font-size: 0.8rem;
+  color: #888;
+  margin: 4px 0 0;
+}
+
+.trans-amount {
+  margin-left: auto;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.trans-amount.positive { color: #2D3A3A; }
+
+.nothing-follows {
+  text-align: center;
+  margin-top: 30px;
+  position: relative;
+}
+
+.nothing-follows::before {
+  content: "";
+  position: absolute;
+  top: 50%; left: 0; right: 0;
+  height: 1px; background: #ddd;
+  z-index: 1;
+}
+
+.nothing-follows span {
+  background: white;
+  padding: 0 15px;
+  position: relative;
+  z-index: 2;
+  font-size: 0.8rem;
+  font-style: italic;
+  color: #aaa;
+}

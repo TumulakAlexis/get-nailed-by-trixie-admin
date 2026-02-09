@@ -1,0 +1,148 @@
+.calendar-container {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #eee;
+}
+
+.calendar-header-grid, .calendar-days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.weekday-label {
+  padding: 15px;
+  font-size: 0.8rem;
+  color: #999;
+  font-weight: 600;
+  border-bottom: 1px solid #eee;
+}
+
+.calendar-day {
+  height: 120px;
+  padding: 10px;
+  border-right: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  background-color: #fff;
+}
+
+.calendar-day.disabled {
+  background-color: #f9f9f9;
+  color: #ccc;
+}
+
+.day-number-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.day-number {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #444;
+}
+
+/* Status Dots from your image */
+.status-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.calendar-name-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 5px;
+  overflow: hidden;
+}
+
+.calendar-name-tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  background: #f0f2f0; /* Very light sage/grey */
+  color: #2D3A3A;
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Adds ... if the name is too long */
+  text-align: left;
+}
+
+/* Optional: style the "Blocked" tag differently */
+.calendar-name-tag:contains("Blocked") {
+  color: #8BA08E;
+  font-style: italic;
+}
+
+.calendar-day {
+  min-height: 100px; /* Ensure boxes are tall enough to show names */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 10px;
+}
+
+/* --- Hover Effects --- */
+.calendar-day:not(.disabled) {
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.calendar-day:not(.disabled):hover {
+  background-color: #f7f9f7; /* Subtle sage-tinted white */
+  transform: translateY(-2px); /* Slight lift effect */
+  box-shadow: 0 4px 12px rgba(45, 58, 58, 0.08); /* Soft slate shadow */
+  z-index: 5;
+  border-radius: 4px;
+}
+
+/* Ensure the background stays consistent for disabled days */
+.calendar-day.disabled:hover {
+  cursor: default;
+  transform: none;
+}
+
+.calendar-nav-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: #fff;
+  border-bottom: 1px solid #eee;
+}
+
+.calendar-month-title {
+  font-family: 'serif', serif;
+  font-size: 1.25rem;
+  color: #2D3A3A;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.nav-btn {
+  background: #f0f2f0;
+  border: none;
+  color: #2D3A3A;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.nav-btn:hover {
+  background-color: #2D3A3A;
+  color: #fff;
+}
+
+.status-dot.vacant { background-color: #6FCF97; }   /* Green */
+.status-dot.busy { background-color: #eb9c57; }     /* Red */
+.status-dot.occupied { background-color: #EB5757; } /* Gray */

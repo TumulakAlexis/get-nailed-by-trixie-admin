@@ -1,0 +1,501 @@
+/* Darken the background behind the modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* List View Modal */
+.slot-modal {
+  background: white;
+  padding: 45px;
+  border-radius: 35px;
+  width: 440px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+}
+
+.modal-date-title {
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: #2D3A3A;
+  margin-bottom: 30px;
+  letter-spacing: -1px;
+}
+
+.slot-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.slot-time {
+  font-weight: 800;
+  width: 110px;
+  font-size: 1.2rem;
+  color: #2D3A3A;
+}
+
+.vacant-text { color: #6FCF97; font-weight: 700; font-size: 1.2rem; }
+.booked-text { color: #EB5757; font-weight: 700; font-size: 1.2rem; }
+
+.view-slot-btn {
+  margin-left: auto;
+  background: #2D3A3A;
+  color: white;
+  border: none;
+  padding: 6px 18px;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Detail Card View */
+.detail-card {
+  background: white;
+  padding: 60px 40px;
+  border-radius: 35px;
+  width: 480px;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+}
+
+.detail-name {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #2D3A3A;
+  margin-bottom: 8px;
+}
+
+.detail-text {
+  font-size: 1.4rem;
+  color: #2D3A3A;
+  margin: 4px 0;
+}
+
+.detail-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 40px;
+  justify-content: center;
+}
+
+.btn-cancel-res, .btn-done-res {
+  flex: 1;
+  border: none;
+  padding: 16px 0;
+  border-radius: 30px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+}
+
+.btn-cancel-res { background: #EB5757; }
+.btn-done-res { background: #6FCF97; }
+
+/* Additional Detail View Styles */
+.detail-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  text-align: left;
+  margin: 30px 0;
+}
+
+.info-item span {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #8BA08E;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.info-item p {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2D3A3A;
+  margin: 0;
+}
+
+.full-width {
+  grid-column: span 2;
+}
+
+.status-pending {
+  color: #f2994a !important;
+}
+
+.detail-image-section {
+  text-align: left;
+  margin-top: 25px;
+  width: 100%;
+}
+
+.detail-image-section span {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #8BA08E;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.reference-img {
+  width: 100%;
+  max-height: 280px;
+  object-fit: cover;
+  border-radius: 20px;
+  border: 1px solid #eee;
+  display: block;
+}
+
+.block-btn {
+  background: #f3f4f6 !important;
+  color: #4b5563 !important;
+}
+
+/* Update the Detail Card to handle overflow */
+.detail-card {
+  background: white;
+  padding: 30px 40px 40px 40px; /* Reduced top padding from 60px to 30px */
+  border-radius: 35px;
+  width: 480px;
+  max-height: 90vh; /* Limits height to 90% of the screen height */
+  overflow-y: auto; /* Adds scrollbar if content is too tall */
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+  position: relative;
+}
+
+/* Reduce image height slightly to save space */
+.reference-img {
+  width: 100%;
+  max-height: 200px; /* Reduced from 280px to 200px */
+  object-fit: cover;
+  border-radius: 20px;
+  border: 1px solid #eee;
+  display: block;
+}
+
+/* Ensure the grid doesn't take up too much vertical space */
+.detail-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px; /* Reduced gap from 20px to 15px */
+  text-align: left;
+  margin: 20px 0; /* Reduced margin from 30px to 20px */
+}
+
+/* Optional: Add a sticky footer for buttons so they are always visible */
+.detail-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+  justify-content: center;
+  position: sticky;
+  bottom: 0;
+  background: white;
+  padding-top: 10px;
+}
+
+/* Compact, No-Scroll Modern Payment Card */
+.payment-card {
+  width: 440px; 
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 20px; 
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.payment-subtitle {
+  color: #666;
+  font-size: 0.8rem;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+/* Two-column grid to save vertical space */
+.services-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Split into two columns */
+  gap: 8px;
+  margin-bottom: 16px;
+  overflow: hidden; /* Ensures no scrollbars appear */
+}
+
+.service-item {
+  display: flex;
+  flex-direction: column; /* Stack name and price to save width */
+  justify-content: center;
+  align-items: flex-start;
+  padding: 10px 12px;
+  background: #f8f9fa;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.service-item.selected {
+  background: #edf2ee;
+  border-color: #8BA08E;
+}
+
+.service-item span:first-child {
+  font-weight: 600;
+  font-size: 0.8rem;
+  line-height: 1.2;
+}
+
+.service-item span:last-child {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #8BA08E;
+  margin-top: 4px;
+}
+
+/* Tightened Input Section */
+.fee-input-section {
+  background: #f8f9fa;
+  padding: 10px 14px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+.fee-input-section label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #999;
+  margin-bottom: 2px;
+}
+
+.fee-input-section input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #dee2e6;
+  font-size: 1rem;
+  padding: 2px 0;
+  outline: none;
+}
+
+/* Compact Summary */
+.payment-summary {
+  background: #2D3A3A;
+  color: white;
+  padding: 14px 18px;
+  border-radius: 14px;
+  margin-bottom: 16px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  opacity: 0.8;
+  font-size: 0.8rem;
+  margin-bottom: 2px;
+}
+
+.total-row {
+  opacity: 1;
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Button height reduction */
+.btn-done-res, .btn-cancel-res {
+  padding: 10px;
+  font-size: 0.85rem;
+}
+
+/* --- PRINT STYLES --- */
+#receipt-print-area {
+  display: none; /* Hidden on screen */
+}
+
+@media print {
+  /* Hide everything on the page */
+  body * {
+    visibility: hidden;
+  }
+
+  /* Show only the receipt content */
+  #receipt-print-area, #receipt-print-area * {
+    visibility: visible;
+  }
+
+  #receipt-print-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 80mm; /* Standard receipt width */
+    padding: 10px;
+    background: white;
+    color: black;
+    font-family: 'Courier New', Courier, monospace;
+    text-align: center;
+  }
+
+  .receipt-content hr {
+    border: none;
+    border-top: 1px dashed #000;
+    margin: 10px 0;
+  }
+
+  .r-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    margin-bottom: 5px;
+  }
+
+  .r-total {
+    font-size: 16px;
+    margin-top: 10px;
+  }
+}
+
+.receipt-modal-card {
+  text-align: center;
+  width: 420px;
+}
+
+.success-icon {
+  width: 60px;
+  height: 60px;
+  background: #8BA08E;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  margin: 0 auto 15px;
+}
+
+.receipt-display-grid {
+  text-align: left;
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 15px;
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.r-display-item span {
+  font-size: 0.75rem;
+  color: #888;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.r-display-item p {
+  font-size: 0.95rem;
+  color: #2D3A3A;
+  margin-top: 2px;
+  font-weight: 600;
+}
+
+.total-highlight p {
+  color: #8BA08E;
+  font-size: 1.2rem;
+}
+
+.detail-image-container {
+  width: 100%;
+  height: 200px;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  background-color: #f0f0f0;
+}
+
+.booking-reference-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Keeps aspect ratio while filling the box */
+  display: block;
+}
+
+.status-badge {
+  text-transform: capitalize;
+  font-weight: bold;
+}
+
+.status-badge.completed { color: #48C78E; }
+.status-badge.pending { color: #f39c12; }
+.status-badge.canceled { color: #e74c3c; }
+
+.detail-image-section {
+  width: calc(100% + 40px); /* Expand to edges of the card */
+  margin: -20px -20px 20px -20px; /* Pull it into the padding area */
+  height: 250px;
+  background: #f0f0f0;
+  border-radius: 20px 20px 0 0;
+  overflow: hidden;
+  border-bottom: 1px solid #ddd;
+}
+
+.booking-reference-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* This makes the photo fill the space without stretching */
+  display: block;
+}
+
+.image-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #888;
+  font-size: 0.9rem;
+}
+
+/* Fix for No Scroll */
+.detail-card.no-scroll {
+  overflow-y: hidden; /* Removes the scrollbar */
+  max-height: none;   /* Allows card to wrap content naturally */
+  padding-bottom: 30px;
+}
+
+/* Clickable Image Style */
+.detail-image-section.clickable {
+  cursor: zoom-in;
+  transition: opacity 0.2s;
+}
+.detail-image-section.clickable:hover {
+  opacity: 0.9;
+}
+
+/* Expansion Overlay */
+.image-expand-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  cursor: zoom-out;
+}
+
+.expanded-photo {
+  max-width: 90vw;
+  max-height: 90vh;
+  border-radius: 10px;
+  box-shadow: 0 0 30px rgba(0,0,0,0.5);
+  object-fit: contain;
+}

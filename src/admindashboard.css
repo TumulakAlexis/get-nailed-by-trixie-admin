@@ -1,0 +1,74 @@
+.admin-dashboard-layout {
+  display: flex;
+  height: 100vh;
+}
+
+/* Sidebar Styles */
+.admin-sidebar {
+  width: 170px; /* The Sage Green from your image */
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-brand {
+  font-size: 1.2rem;
+  color: #2D3A3A;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 12px 15px;
+  margin-top: 10px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: #2D3A3A;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.nav-item.active {
+  background-color: #2D3A3A; /* Dark Slate highlight */
+  color: white;
+}
+
+/* Content Area */
+.admin-content {
+  flex: 1;
+  margin-left: 260px; /* This MUST be equal to or greater than sidebar width */
+  padding: 40px;
+  width: calc(100% - 260px); /* Explicitly tells the content area how much space it has */
+  box-sizing: border-box;
+}
+
+.content-header {
+  max-width: 1000px;
+  margin: 0 auto 30px auto;
+  margin-top: -80px;
+  color:#2D3A3A;
+  font-size: 20px;
+}
+
+.calendar-wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+  margin-bottom: 50px;
+}
+
+.stat-card {  
+  color: white;
+  padding: 20px 40px;
+  border-radius: 25px;
+  text-align: center;
+  margin-left: 15px;
+}
+
+.stat-value {
+  font-size: 3rem;
+  margin: 0;
+}

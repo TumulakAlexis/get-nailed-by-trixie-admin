@@ -1,0 +1,238 @@
+/* Toggle Switch Styling */
+.mode-toggle {
+  display: flex;
+  background: #f0f2f0;
+  padding: 5px;
+  border-radius: 50px;
+  width: fit-content;
+  margin-bottom: 10px;
+}
+
+.closed-day-container {
+  padding: 40px;
+  max-width: 900px;
+}
+
+.page-title {
+  margin-right: 450px;
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #2D3A3A;
+  margin-bottom: 30px;
+  letter-spacing: -1px;
+}
+
+.setup-box {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  background: white;
+  padding: 30px;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+  width: fit-content;
+  min-width: 400px;
+}
+
+/* Toggle Switch */
+.mode-toggle {
+  display: flex;
+  background: #f4f6f4;
+  padding: 6px;
+  border-radius: 14px;
+  width: fit-content;
+}
+
+.toggle-btn {
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.85rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  background: transparent;
+  color: #8BA08E;
+  display: flex;
+  align-items: center;
+}
+
+.toggle-btn.active {
+  background: #ffffff;
+  color: #2D3A3A;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Modern Input */
+.date-input-wrapper {
+  position: relative;
+  width: 350px;
+}
+
+.date-picker-input {
+  width: 100%;
+  padding: 14px 20px;
+  background-color: #ffffff;
+  border: 2px solid #eef0ee;
+  border-radius: 15px;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2D3A3A;
+  outline: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.date-picker-input:hover {
+  border-color: #8BA08E;
+}
+
+.date-picker-input:focus {
+  border-color: #2D3A3A;
+  box-shadow: 0 0 0 4px rgba(139, 160, 142, 0.1);
+}
+
+/* Tag Area */
+.selected-dates-wrapper {
+  background: #fcfdfc;
+  padding: 20px;
+  border-radius: 18px;
+  border: 1px solid #f0f2f0;
+}
+
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.date-tag {
+  background-color: #2D3A3A;
+  color: #ffffff;
+  padding: 6px 14px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.remove-tag-btn {
+  background: none;
+  border: none;
+  color: #8BA08E;
+  cursor: pointer;
+  padding: 0;
+  font-size: 0.9rem;
+  transition: color 0.2s;
+}
+
+.remove-tag-btn:hover {
+  color: #ff6b6b;
+}
+
+/* Confirm Button */
+.btn-confirm-close {
+  background-color: #2D3A3A;
+  color: white;
+  padding: 16px 40px;
+  border-radius: 50px;
+  border: none;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 20px rgba(45, 58, 58, 0.15);
+}
+
+.btn-confirm-close:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(45, 58, 58, 0.2);
+}
+
+.btn-confirm-close:disabled {
+  background-color: #e0e0e0;
+  color: #a0a0a0;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.button-group {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.btn-unblock {
+  background-color: transparent;
+  color: #2D3A3A;
+  padding: 16px 30px;
+  border-radius: 50px;
+  border: 2px solid #2D3A3A;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-unblock:hover:not(:disabled) {
+  background-color: #f8faf8;
+  border-color: #8BA08E;
+}
+
+.btn-unblock:disabled {
+  border-color: #e0e0e0;
+  color: #a0a0a0;
+  cursor: not-allowed;
+}
+
+/* Ensure the tags container handles many days gracefully */
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+  max-height: 250px; /* Increased for month mode */
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+/* ... existing styles ... */
+
+.btn-confirm-close.btn-conflict {
+  background: #f39c12; /* Warning Orange */
+  color: white;
+  border: none;
+  cursor: not-allowed;
+  animation: pulse-warning 2s infinite;
+}
+
+.btn-confirm-close.btn-conflict:hover {
+  background: #e67e22; /* Slightly darker orange */
+  transform: none;
+}
+
+@keyframes pulse-warning {
+  0% {
+    box-shadow: 0 0 0 0 rgba(243, 156, 18, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(243, 156, 18, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(243, 156, 18, 0);
+  }
+}
+
+.btn-unblock {
+  /* Ensure it looks consistent with the confirm button */
+  padding: 16px 40px;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 1rem;
+}

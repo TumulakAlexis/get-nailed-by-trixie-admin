@@ -1,0 +1,88 @@
+.admin-sidebar {
+  width: 100px; /* As requested */
+  height: 100vh;
+  background-color: #2E403D;
+  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
+}
+
+.sidebar-logo-section {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.sidebar-logo {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 8px;
+  object-fit: cover;
+}
+
+.sidebar-brand {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: #899D87;
+  margin: 0;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.sidebar-author {
+  font-size: 0.5rem;
+  color: #899D87;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+}
+
+.nav-item {
+  display: flex;/* Stack icon and text for narrow width */
+  align-items:start;
+  gap: 10px;
+  justify-content: center;
+  width: 80px;
+  height: 40px;
+  padding: 10px;
+  border-radius: 12px;
+  border: none;
+  background: transparent;
+  color:#899D87 !important ;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nav-item.active {
+  background-color: #ffffff; /* White active background */
+  /* Text/Icon color switches to Dark Slate for contrast */
+  color: #2E403D !important; 
+  background-color: #ffffff !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.nav-icon {
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+}
+
+.nav-text {
+  font-size: 0.55rem;
+  font-weight: 700;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+/* CONTENT ADAPTATION */
+/* Make sure your main content knows the sidebar is now 100px */
+.admin-content {
+  margin-left: 100px;
+  width: calc(100% - 100px);
+}
