@@ -3,10 +3,11 @@ import { useMutation, useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { format } from 'date-fns';
 import './BookingModal.css';
+// Ensure you create this component in a separate file
+import PrintReceipt from './PrintReceipt'; 
 
 const TIME_SLOTS = ["9:00 AM", "1:00 PM", "4:00 PM"];
 
-// --- INTERNAL COMPONENT: PAYMENT MODAL ---
 const PaymentModal = ({ booking, onConfirm, onCancel }) => {
   const SERVICE_LIST = [
     { id: 'soft-gel', name: 'Soft Gel Extension', price: 799 },
@@ -89,7 +90,6 @@ const PaymentModal = ({ booking, onConfirm, onCancel }) => {
   );
 };
 
-// --- RESTORED: FINAL RECEIPT MODAL ---
 const ReceiptModal = ({ transaction, onPrint, onClose }) => (
   <div className="modal-overlay">
     <div className="detail-card receipt-modal-card" onClick={(e) => e.stopPropagation()}>
@@ -101,7 +101,7 @@ const ReceiptModal = ({ transaction, onPrint, onClose }) => (
       <div className="receipt-display-grid">
         <div className="r-display-item">
           <span>Transaction ID</span>
-          <p>{transaction.id.toString().slice(-8).toUpperCase()}</p>
+          <p>{transaction.id ? transaction.id.toString().slice(-8).toUpperCase() : transaction._id?.toString().slice(-8).toUpperCase()}</p>
         </div>
         <div className="r-display-item">
           <span>Client Name</span>
@@ -142,6 +142,11 @@ const BookingModal = ({ date, onClose }) => {
   const deleteBooking = useMutation(api.admin.deleteBooking);
   const createTransaction = useMutation(api.admin.createTransaction);
 
+  // Added query to fetch transaction for completed view
+  const completedTransaction = useQuery(api.admin.getTransactionByBookingId, 
+    viewingBooking?.status === 'completed' ? { bookingId: viewingBooking._id } : "skip"
+  );
+
   const dayBookings = useMemo(() =>
     allBookings.filter(b => b.date === date),
     [allBookings, date]
@@ -149,6 +154,12 @@ const BookingModal = ({ date, onClose }) => {
 
   const handleFinalCheckout = async (paymentData) => {
     try {
+      // 1. Manually create the date string
+      const completedDate = format(new Date(), 'yyyy-MM-dd');
+      
+      // 2. LOG IT - Press F12 in your browser to see if this prints a date
+      console.log("Saving Transaction with Date:", completedDate);
+
       const transactionId = await createTransaction({
         bookingId: viewingBooking._id,
         name: viewingBooking.name,
@@ -156,7 +167,7 @@ const BookingModal = ({ date, onClose }) => {
         services: paymentData.services,
         additionalFee: paymentData.additionalFee,
         totalFee: paymentData.totalFee,
-        date: viewingBooking.date
+        date: completedDate, // <--- ENSURE THIS LINE IS HERE
       });
 
       setTransactionResult({
@@ -170,8 +181,8 @@ const BookingModal = ({ date, onClose }) => {
       await updateStatus({ id: viewingBooking._id, status: 'completed' });
 
     } catch (err) {
-      console.error(err);
-      alert("Error saving transaction");
+      console.error("TRANSACTION ERROR:", err);
+      alert("Error saving transaction. Check console (F12).");
     }
   };
 
@@ -238,7 +249,14 @@ const BookingModal = ({ date, onClose }) => {
               {isManualBlock ? "Delete Block" : "Cancel Reservation"}
             </button>
 
-            {!isManualBlock && viewingBooking.status !== 'completed' && (
+            {/* Added Print button for completed status */}
+            {!isManualBlock && viewingBooking.status === 'completed' && (
+              <button className="btn-done-res" onClick={() => setTransactionResult(completedTransaction)}>
+                Print Receipt
+              </button>
+            )}
+
+            {!isManualBlock && viewingBooking.status !== 'completed' && viewingBooking.status !== 'canceled' && (
               <button className="btn-done-res" onClick={() => setIsCheckout(true)}>
                 Done Reservation
               </button>
@@ -257,14 +275,14 @@ const BookingModal = ({ date, onClose }) => {
           {TIME_SLOTS.map(slot => {
             const booking = dayBookings.find(b => 
               b.slot === slot && 
-              b.status !== 'canceled' && 
-              b.status !== 'completed'
+              b.status !== 'canceled'
             );
             return (
               <div key={slot} className="slot-row">
                 <span className="slot-time">{slot}</span>
-                <span className={booking ? 'booked-text' : 'vacant-text'}>
+                <span className={booking ? (booking.status === 'completed' ? 'vacant-text' : 'booked-text') : 'vacant-text'}>
                   {booking ? (booking.name === "Occupied" ? "Occupied" : booking.name) : 'Vacant'}
+                  {booking?.status === 'completed' && " (Done)"}
                 </span>
                 {booking ? (
                   <button className="view-slot-btn" onClick={() => setViewingBooking(booking)}>View</button>
@@ -284,17 +302,8 @@ const BookingModal = ({ date, onClose }) => {
   if (transactionResult) {
     return (
       <>
-        <ReceiptModal transaction={transactionResult} onPrint={handlePrint} onClose={onClose} />
-        <div id="receipt-print-area">
-          <div className="printable-content">
-            <h2>SALON RECEIPT</h2>
-            <p>{format(new Date(), 'PPpp')}</p>
-            <hr />
-            <p><strong>Client:</strong> {transactionResult.name}</p>
-            <p><strong>Services:</strong> {transactionResult.services.join(", ")}</p>
-            <p><strong>Total:</strong> ₱{transactionResult.totalFee}</p>
-          </div>
-        </div>
+        <ReceiptModal transaction={transactionResult} onPrint={handlePrint} onClose={() => {setTransactionResult(null); onClose();}} />
+        <PrintReceipt transaction={transactionResult} />
       </>
     );
   }

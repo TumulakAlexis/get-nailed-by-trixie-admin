@@ -123,11 +123,13 @@ export const createTransaction = mutation({
   },
   handler: async (ctx, args) => {
     const transactionId = await ctx.db.insert("transactions", {
+      bookingId: args.bookingId, // 1. ADD THIS LINE (Fixes the Schema Error)
       name: args.name,
       phone: args.phone,
       services: args.services,
       additionalFee: args.additionalFee,
       totalFee: args.totalFee,
+      date: args.date,           // 2. ADD THIS LINE (Ensures date is saved)
       createdAt: Date.now(),
     });
 
@@ -146,5 +148,55 @@ export const getAllTransactions = query({
       .query("transactions")
       .order("desc")
       .collect();
+  },
+});
+
+/** 
+ * --- NEW: EXPENSE FUNCTIONS ---
+ */
+export const addExpense = mutation({
+  args: {
+    description: v.string(),
+    amount: v.number(),
+    category: v.string(),
+    date: v.string(),
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db.insert("expenses", {
+      ...args,
+      createdAt: Date.now(),
+    });
+  },
+});
+
+export const getAllExpenses = query({
+  handler: async (ctx) => {
+    return await ctx.db.query("expenses").order("desc").collect();
+  },
+});
+
+// Add these to convex/admin.ts
+
+export const deleteExpense = mutation({
+  args: { id: v.id("expenses") },
+  handler: async (ctx, args) => {
+    await ctx.db.delete(args.id);
+  },
+});
+
+export const deleteTransaction = mutation({
+  args: { id: v.id("transactions") },
+  handler: async (ctx, args) => {
+    await ctx.db.delete(args.id);
+  },
+});
+
+export const getTransactionByBookingId = query({
+  args: { bookingId: v.id("bookings") },
+  handler: async (ctx, args) => {
+    return await ctx.db
+      .query("transactions")
+      .withIndex("by_bookingId", (q) => q.eq("bookingId", args.bookingId))
+      .unique();
   },
 });

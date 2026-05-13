@@ -1,0 +1,76 @@
+/* Hidden on your monitor */
+.print-only-receipt-wrapper {
+  display: none;
+  font-family: 'Courier New', Courier, monospace;
+  width: 80mm; 
+  padding: 20px; /* Increased base padding */
+  color: black;
+  background: white;
+}
+
+/* --- PRINT RULES --- */
+@media print {
+  /* 1. Hide the entire React App */
+  body * {
+    visibility: hidden;
+  }
+
+  /* 2. Show only the receipt */
+  .print-only-receipt-wrapper, 
+  .print-only-receipt-wrapper * {
+    visibility: visible;
+  }
+
+  /* 3. Position the receipt */
+  .print-only-receipt-wrapper {
+    display: block !important;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Use padding to ensure text doesn't hit the edge of the paper */
+    padding: 10mm; 
+    box-sizing: border-box;
+  }
+
+  /* 4. Define Paper Margins */
+  @page {
+    /* This creates a buffer so the printer doesn't cut off text */
+    margin: 10mm; 
+  }
+}
+
+/* Styling for the receipt look */
+.receipt-header { 
+  text-align: center; 
+  margin-bottom: 15px; 
+}
+.receipt-header h1 { font-size: 20px; margin: 0; text-transform: uppercase; }
+.receipt-header p { font-size: 13px; margin: 4px 0; }
+
+.receipt-divider { 
+  border-bottom: 1px dashed #000; 
+  margin: 15px 0; 
+}
+
+.r-line { 
+  display: flex; 
+  justify-content: space-between; 
+  font-size: 14px; 
+  margin: 6px 0; 
+}
+
+.total-line { 
+  border-top: 2px solid #000;
+  padding-top: 10px;
+  font-weight: bold; 
+  font-size: 18px; 
+  margin-top: 15px; 
+}
+
+.thank-you { 
+  text-align: center; 
+  margin-top: 30px; 
+  font-style: italic; 
+  font-size: 13px; 
+}

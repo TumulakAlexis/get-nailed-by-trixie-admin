@@ -3,13 +3,15 @@
   background-color: #f4f7f6;
   min-height: 100vh;
   font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
 
-/* Header Cards */
+/* 1. Header Cards (Top Row) */
 .trans-header {
   display: flex;
   gap: 20px;
-  margin-bottom: 30px;
 }
 
 .summary-card {
@@ -20,7 +22,7 @@
 
 .summary-card.dark {
   background-color: #2E403D;
-  color: #48C78E; /* Light green for the currency */
+  color: #48C78E;
 }
 
 .summary-card.light {
@@ -35,18 +37,21 @@
   opacity: 0.8;
 }
 
-/* List Layout */
-.trans-content-layout {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
+/* 2. Main Content Stack (Vertical) */
+.trans-content-vertical {
+  display: flex;
+  flex-direction: column;
   gap: 30px;
 }
 
+/* 3. Transaction Log Section (Middle Row) */
 .main-log-section {
   background: white;
   border-radius: 24px;
   padding: 25px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .log-header {
@@ -63,11 +68,61 @@
   width: 250px;
 }
 
-/* Individual Item (Reference: Image Right Sidebar) */
+/* 4. Income Statement Section (Bottom Row) */
+.bottom-report-section {
+  width: 100%;
+}
+
+.report-card.full-width {
+  background: #fff;
+  padding: 30px;
+  border-radius: 24px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  border: 1px solid #eee;
+}
+
+/* Two-Column Grid inside the Statement */
+.report-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 20px;
+}
+
+.report-row.header {
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  color: #1a202c;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 2px solid #f7fafc;
+  padding-bottom: 10px;
+}
+
+.report-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 2px solid #333;
+}
+
+.report-row.total {
+  width: 320px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8fafc;
+  padding: 15px 20px;
+  border-radius: 12px;
+  font-weight: bold;
+}
+
+/* Elements & Items */
 .trans-item {
   display: flex;
   align-items: center;
-  text-align: start;
   padding: 15px 0;
   border-bottom: 1px solid #f0f0f0;
 }
@@ -80,46 +135,92 @@
   margin-right: 15px;
 }
 
-.trans-details h3 {
-  font-size: 0.95rem;
-  margin: 0;
-  color: #2D3A3A;
-}
-
-.trans-details p {
-  font-size: 0.8rem;
-  color: #888;
-  margin: 4px 0 0;
-}
-
-.trans-amount {
-  margin-left: auto;
-  font-weight: 700;
-  font-size: 0.95rem;
-}
-
 .trans-amount.positive { color: #2D3A3A; }
+.val.negative, .exp-amt { color: #e74c3c; font-weight: 600; }
+.val-highlight { color: #2f855a; font-weight: 800; font-size: 1.4rem; }
 
-.nothing-follows {
-  text-align: center;
-  margin-top: 30px;
-  position: relative;
+/* Expense Form Styling */
+.expense-form-container {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+  border: 1px solid #edf2f7;
 }
 
-.nothing-follows::before {
-  content: "";
-  position: absolute;
-  top: 50%; left: 0; right: 0;
-  height: 1px; background: #ddd;
-  z-index: 1;
+.expense-form {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr auto;
+  gap: 12px;
+  align-items: center;
 }
 
-.nothing-follows span {
-  background: white;
-  padding: 0 15px;
-  position: relative;
-  z-index: 2;
-  font-size: 0.8rem;
-  font-style: italic;
-  color: #aaa;
+.expense-form input, .expense-form select {
+  padding: 10px 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background-color: #f8fafc;
+}
+
+.expense-form button {
+  background-color: #4a5568;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Helpers & Lists */
+.expense-breakdown {
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.expense-line-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #f7fafc;
+}
+
+.btn-done-res{
+  width: 10px;
+}
+.delete-btn-small, .del-exp {
+  background: none;
+  border: none;
+  color: #cbd5e0;
+  cursor: pointer;
+}
+
+.delete-btn-small:hover, .del-exp:hover {
+  color: #e53e3e;
+}
+
+@media (max-width: 900px) {
+  .report-grid { grid-template-columns: 1fr; }
+  .expense-form { grid-template-columns: 1fr; }
+}
+
+@media print {
+  /* Hide everything */
+  body * {
+    visibility: hidden;
+  }
+  /* Show only the report section */
+  .printable-report, .printable-report * {
+    visibility: visible;
+  }
+  .printable-report {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+  /* Hide the Print button itself and delete buttons on the paper */
+  .printable-report button, .del-exp {
+    display: none !important;
+  }
 }
