@@ -7,6 +7,27 @@
   color: black;
   background: white;
 }
+.r-line {
+  display: flex;
+  justify-content: space-between; /* Pushes Label to left and Price to right */
+  font-size: 13px;
+  margin: 4px 0;
+}
+
+.r-line {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 4px;
+}
+.service-item {
+  padding-left: 5px;
+}
+
+.additional-line {
+  margin-top: 8px;
+  font-style: italic;
+}
 
 /* --- PRINT RULES --- */
 @media print {
@@ -73,4 +94,11 @@
   margin-top: 30px; 
   font-style: italic; 
   font-size: 13px; 
+}
+
+/* This ensures the service name is on the left and price is on the right */
+.service-row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }

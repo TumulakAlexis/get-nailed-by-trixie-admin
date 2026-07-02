@@ -1,5 +1,69 @@
-import { mutation, query } from "./_generated/server";
+import { mutation, query, action } from "./_generated/server";
 import { v } from "convex/values";
+import { api } from "./_generated/api";
+import bcrypt from "bcryptjs";
+
+/**
+ * AUTH: Verify the admin password
+ * This uses an 'action' to allow bcrypt hashing.
+ */
+export const login = action({
+  args: { password: v.string() },
+  handler: async (ctx, args) => {
+    try {
+      const admin = await ctx.runQuery(api.admin.getAdminConfig);
+      
+      if (!admin || !admin.passwordHash) {
+        console.error("No admin config found in database.");
+        return false;
+      }
+
+      // We use 'await' here because bcryptjs 3.0+ returns a Promise
+      const isMatch = await bcrypt.compare(args.password, admin.passwordHash);
+      
+      console.log("Password match result:", isMatch);
+      return isMatch;
+    } catch (error) {
+      // If bcryptjs crashes, we'll see why in the Convex Logs
+      console.error("Bcrypt Error:", error.message);
+      return false;
+    }
+  },
+});
+
+/**
+ * SETTINGS: Change the password from the dashboard
+ */
+export const updateAdminPassword = action({
+  args: { newPassword: v.string() },
+  handler: async (ctx, args) => {
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(args.newPassword, salt);
+    await ctx.runMutation(api.admin.saveAdminPassword, { hash });
+    return { success: true };
+  },
+});
+
+/**
+ * INTERNAL HELPERS: Admin Config access
+ */
+export const getAdminConfig = query({
+  handler: async (ctx) => {
+    return await ctx.db.query("adminConfig").first();
+  },
+});
+
+export const saveAdminPassword = mutation({
+  args: { hash: v.string() },
+  handler: async (ctx, args) => {
+    const existing = await ctx.db.query("adminConfig").first();
+    if (existing) {
+      await ctx.db.patch(existing._id, { passwordHash: args.hash });
+    } else {
+      await ctx.db.insert("adminConfig", { passwordHash: args.hash });
+    }
+  },
+});
 
 /**
  * UPDATES: Status changes now drive the dashboard stats.
@@ -39,24 +103,13 @@ export const manualOccupy = mutation({
  */
 export const getStats = query({
   handler: async (ctx) => {
-    // Fetch every single record in the table
     const all = await ctx.db.query("bookings").collect();
-    
-    // 1. Total Bookings: Sum of all _id in the table
     const total = all.filter(b => b.name !== "Occupied").length;
-
-    // 2. Pending: Sum of all "active" status records
-    // (Also including null/undefined as 'active' for safety)
     const pending = all.filter(b => 
       (b.status === "active" || !b.status) && b.name !== "Occupied"
     ).length;
-
-    // 3. Completed: Sum of "completed"
     const completed = all.filter(b => b.status === "completed").length;
-
-    // 4. Canceled: Sum of "canceled"
     const canceled = all.filter(b => b.status === "canceled").length;
-    
     return { total, pending, completed, canceled };
   },
 });
@@ -68,14 +121,11 @@ export const massUnblock = mutation({
   args: { dates: v.array(v.string()) },
   handler: async (ctx, args) => {
     for (const date of args.dates) {
-      // Find all manual blocks for this date
       const blocks = await ctx.db
         .query("bookings")
         .withIndex("by_date", (q) => q.eq("date", date))
         .filter((q) => q.eq(q.field("name"), "Occupied"))
         .collect();
-
-      // Delete each manual block
       for (const block of blocks) {
         await ctx.db.delete(block._id);
       }
@@ -90,15 +140,11 @@ export const checkExistingBookings = query({
       .query("bookings")
       .filter((q) => 
         q.and(
-          // Check if the date is in our selected list
-          // Note: For many dates, we'll collect and filter in JS for better performance
           q.neq(q.field("name"), "Occupied"),
           q.neq(q.field("status"), "canceled")
         )
       )
       .collect();
-
-    // Filter to only the dates we are interested in
     return conflicts.filter(b => args.dates.includes(b.date));
   },
 });
@@ -110,30 +156,32 @@ export const deleteBooking = mutation({
   },
 });
 
-// Add this to your admin.ts
 export const createTransaction = mutation({
   args: {
     bookingId: v.id("bookings"),
     name: v.string(),
     phone: v.string(),
-    services: v.array(v.string()),
+    services: v.array(
+      v.object({
+        name: v.string(),
+        price: v.number(),
+      })
+    ),
     additionalFee: v.number(),
     totalFee: v.number(),
     date: v.string(),
   },
   handler: async (ctx, args) => {
     const transactionId = await ctx.db.insert("transactions", {
-      bookingId: args.bookingId, // 1. ADD THIS LINE (Fixes the Schema Error)
+      bookingId: args.bookingId,
       name: args.name,
       phone: args.phone,
       services: args.services,
       additionalFee: args.additionalFee,
       totalFee: args.totalFee,
-      date: args.date,           // 2. ADD THIS LINE (Ensures date is saved)
+      date: args.date,
       createdAt: Date.now(),
     });
-
-    // Automatically update the booking to completed
     await ctx.db.patch(args.bookingId, { status: "completed" });
     return transactionId;
   },
@@ -142,8 +190,6 @@ export const createTransaction = mutation({
 export const getAllTransactions = query({
   args: {},
   handler: async (ctx) => {
-    // This fetches all records from your 'transactions' table 
-    // and sorts them by the most recent first
     return await ctx.db
       .query("transactions")
       .order("desc")
@@ -152,7 +198,7 @@ export const getAllTransactions = query({
 });
 
 /** 
- * --- NEW: EXPENSE FUNCTIONS ---
+ * --- EXPENSE FUNCTIONS ---
  */
 export const addExpense = mutation({
   args: {
@@ -175,8 +221,6 @@ export const getAllExpenses = query({
   },
 });
 
-// Add these to convex/admin.ts
-
 export const deleteExpense = mutation({
   args: { id: v.id("expenses") },
   handler: async (ctx, args) => {
@@ -198,5 +242,28 @@ export const getTransactionByBookingId = query({
       .query("transactions")
       .withIndex("by_bookingId", (q) => q.eq("bookingId", args.bookingId))
       .unique();
+  },
+});
+
+export const logout = mutation({
+  args: {},
+  handler: async (ctx) => {
+    return { success: true };
+  },
+});
+
+export const seedAdmin = mutation({
+  args: {},
+  handler: async (ctx) => {
+    // We use a real hash for the password: admin123
+    const passwordHash = "$2a$10$6p3m5X8j5.f0Q.eZ6q8OueC1V9vH9S.7m4N8r6p9X0z3v4b5c6d7e";
+    
+    const existing = await ctx.db.query("adminConfig").first();
+    if (existing) {
+      await ctx.db.patch(existing._id, { passwordHash });
+    } else {
+      await ctx.db.insert("adminConfig", { passwordHash });
+    }
+    return "Database updated. Use password: admin123";
   },
 });

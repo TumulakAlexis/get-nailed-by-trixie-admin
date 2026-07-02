@@ -4,24 +4,21 @@ import { api } from "../../convex/_generated/api";
 import { format } from 'date-fns';
 import './BookingModal.css';
 // Ensure you create this component in a separate file
-import PrintReceipt from './PrintReceipt'; 
+import PrintReceipt from './PrintReceipt';
 
 const TIME_SLOTS = ["9:00 AM", "1:00 PM", "4:00 PM"];
 
 const PaymentModal = ({ booking, onConfirm, onCancel }) => {
-  const SERVICE_LIST = [
-    { id: 'soft-gel', name: 'Soft Gel Extension', price: 799 },
-    { id: 'gel-polish', name: 'Gel Polish', price: 399 },
-    { id: 'removal', name: 'Removal', price: 199 },
-  ];
+  // 1. Fetch dynamic services from your Convex database
+  const servicesData = useQuery(api.services.getServices) || [];
 
   const [selectedServices, setSelectedServices] = useState([]);
   const [extraFee, setExtraFee] = useState("");
 
   const toggleService = (service) => {
     setSelectedServices(prev =>
-      prev.find(s => s.id === service.id)
-        ? prev.filter(s => s.id !== service.id)
+      prev.find(s => s._id === service._id)
+        ? prev.filter(s => s._id !== service._id)
         : [...prev, service]
     );
   };
@@ -37,17 +34,25 @@ const PaymentModal = ({ booking, onConfirm, onCancel }) => {
         <h2 className="detail-name">Checkout: {booking.name}</h2>
         <p className="payment-subtitle">Select services provided:</p>
 
-        <div className="services-grid">
-          {SERVICE_LIST.map(s => (
-            <div
-              key={s.id}
-              className={`service-item ${selectedServices.find(sel => sel.id === s.id) ? 'selected' : ''}`}
-              onClick={() => toggleService(s)}
-            >
-              <span>{s.name}</span>
-              <span>₱{s.price}</span>
-            </div>
-          ))}
+        {/* 2. Scrollable Services Grid using database data */}
+        <div className="services-grid" style={{ maxHeight: '300px', overflowY: 'auto' }}>
+          {servicesData.length > 0 ? (
+            servicesData.map(s => (
+              <div
+                key={s._id}
+                className={`service-item ${selectedServices.find(sel => sel._id === s._id) ? 'selected' : ''}`}
+                onClick={() => toggleService(s)}
+              >
+                <div className="service-item-info">
+                  {s.imageUrl && <img src={s.imageUrl} alt="" className="mini-thumb" style={{ width: '10px', height: '10px', marginRight: '5px' }} />}
+                  <span>{s.name}</span>
+                </div>
+                <span>₱{s.price.toLocaleString()}</span>
+              </div>
+            ))
+          ) : (
+            <p style={{ textAlign: 'center', color: '#888' }}>No services found in menu.</p>
+          )}
         </div>
 
         <div className="fee-input-section">
@@ -56,18 +61,18 @@ const PaymentModal = ({ booking, onConfirm, onCancel }) => {
             type="number"
             value={extraFee}
             onChange={(e) => setExtraFee(e.target.value)}
-            placeholder="0"
+            placeholder="e.g. for nail art or stones"
           />
         </div>
 
         <div className="payment-summary">
           <div className="summary-row">
             <span>Subtotal:</span>
-            <span>₱{total - (Number(extraFee) || 0)}</span>
+            <span>₱{(total - (Number(extraFee) || 0)).toLocaleString()}</span>
           </div>
           <div className="summary-row total-row">
             <span>Total Amount:</span>
-            <span>₱{total}</span>
+            <span style={{ color: '#6366f1' }}>₱{total.toLocaleString()}</span>
           </div>
         </div>
 
@@ -76,7 +81,11 @@ const PaymentModal = ({ booking, onConfirm, onCancel }) => {
           <button
             className="btn-done-res"
             onClick={() => onConfirm({
-              services: selectedServices.map(s => s.name),
+              // FIXED: Sending objects with name AND price instead of just names
+              services: selectedServices.map(s => ({
+                name: s.name,
+                price: s.price
+              })),
               additionalFee: Number(extraFee) || 0,
               totalFee: total
             })}
@@ -113,7 +122,10 @@ const ReceiptModal = ({ transaction, onPrint, onClose }) => (
         </div>
         <div className="r-display-item full-width">
           <span>Services Provided</span>
-          <p>{transaction.services.join(", ")}</p>
+          {/* Logic added to handle both string and object formats safely */}
+          <p>
+            {transaction.services?.map(s => (typeof s === 'object' ? s.name : s)).join(", ")}
+          </p>
         </div>
         <div className="r-display-item total-highlight">
           <span>Total Paid</span>
@@ -142,8 +154,7 @@ const BookingModal = ({ date, onClose }) => {
   const deleteBooking = useMutation(api.admin.deleteBooking);
   const createTransaction = useMutation(api.admin.createTransaction);
 
-  // Added query to fetch transaction for completed view
-  const completedTransaction = useQuery(api.admin.getTransactionByBookingId, 
+  const completedTransaction = useQuery(api.admin.getTransactionByBookingId,
     viewingBooking?.status === 'completed' ? { bookingId: viewingBooking._id } : "skip"
   );
 
@@ -154,11 +165,7 @@ const BookingModal = ({ date, onClose }) => {
 
   const handleFinalCheckout = async (paymentData) => {
     try {
-      // 1. Manually create the date string
       const completedDate = format(new Date(), 'yyyy-MM-dd');
-      
-      // 2. LOG IT - Press F12 in your browser to see if this prints a date
-      console.log("Saving Transaction with Date:", completedDate);
 
       const transactionId = await createTransaction({
         bookingId: viewingBooking._id,
@@ -167,11 +174,11 @@ const BookingModal = ({ date, onClose }) => {
         services: paymentData.services,
         additionalFee: paymentData.additionalFee,
         totalFee: paymentData.totalFee,
-        date: completedDate, // <--- ENSURE THIS LINE IS HERE
+        date: completedDate,
       });
 
       setTransactionResult({
-        id: transactionId,
+        _id: transactionId,
         ...paymentData,
         name: viewingBooking.name,
         phone: viewingBooking.phone || "N/A"
@@ -182,7 +189,7 @@ const BookingModal = ({ date, onClose }) => {
 
     } catch (err) {
       console.error("TRANSACTION ERROR:", err);
-      alert("Error saving transaction. Check console (F12).");
+      alert("Error saving transaction.");
     }
   };
 
@@ -192,13 +199,13 @@ const BookingModal = ({ date, onClose }) => {
 
   const DetailView = () => {
     const isManualBlock = viewingBooking.name === "Occupied";
-    const imageUrl = useQuery(api.bookings.getImageUrl, { 
-      storageId: viewingBooking.imageStorageId 
+    const imageUrl = useQuery(api.bookings.getImageUrl, {
+      storageId: viewingBooking.imageStorageId
     });
 
     return (
       <div className="modal-overlay" onClick={() => setViewingBooking(null)}>
-      
+
         {isExpanded && imageUrl && (
           <div className="image-expand-overlay" onClick={() => setIsExpanded(false)}>
             <img src={imageUrl} alt="Zoomed" className="expanded-photo" />
@@ -206,7 +213,7 @@ const BookingModal = ({ date, onClose }) => {
         )}
 
         <div className="detail-card no-scroll" onClick={(e) => e.stopPropagation()}>
-          
+
           {!isManualBlock && viewingBooking.imageStorageId && (
             <div className="detail-image-section clickable" onClick={() => setIsExpanded(true)}>
               {imageUrl ? (
@@ -249,7 +256,6 @@ const BookingModal = ({ date, onClose }) => {
               {isManualBlock ? "Delete Block" : "Cancel Reservation"}
             </button>
 
-            {/* Added Print button for completed status */}
             {!isManualBlock && viewingBooking.status === 'completed' && (
               <button className="btn-done-res" onClick={() => setTransactionResult(completedTransaction)}>
                 Print Receipt
@@ -273,8 +279,8 @@ const BookingModal = ({ date, onClose }) => {
         <h2 className="modal-date-title">{format(new Date(date.replace(/-/g, '/')), 'MMMM, d')}</h2>
         <div className="slot-container">
           {TIME_SLOTS.map(slot => {
-            const booking = dayBookings.find(b => 
-              b.slot === slot && 
+            const booking = dayBookings.find(b =>
+              b.slot === slot &&
               b.status !== 'canceled'
             );
             return (
@@ -302,7 +308,7 @@ const BookingModal = ({ date, onClose }) => {
   if (transactionResult) {
     return (
       <>
-        <ReceiptModal transaction={transactionResult} onPrint={handlePrint} onClose={() => {setTransactionResult(null); onClose();}} />
+        <ReceiptModal transaction={transactionResult} onPrint={handlePrint} onClose={() => { setTransactionResult(null); onClose(); }} />
         <PrintReceipt transaction={transactionResult} />
       </>
     );

@@ -18,7 +18,10 @@ export default defineSchema({
     bookingId: v.id("bookings"), // <--- ADDED: The link to the booking
     name: v.string(),
     phone: v.string(),
-    services: v.array(v.string()),
+    services: v.array(v.object({ 
+    name: v.string(), 
+    price: v.number() 
+  })),
     additionalFee: v.number(),
     totalFee: v.number(),
     date: v.optional(v.string()), 
@@ -32,4 +35,17 @@ export default defineSchema({
     date: v.string(), 
     createdAt: v.number(),
   }),
+
+  // Add this to your schema.ts
+services: defineTable({
+  name: v.string(),
+  description: v.string(),
+  price: v.number(),
+  imageStorageId: v.optional(v.id("_storage")), // For the service photo
+}),
+
+adminConfig: defineTable({
+    passwordHash: v.string(),
+  }),
+  
 });

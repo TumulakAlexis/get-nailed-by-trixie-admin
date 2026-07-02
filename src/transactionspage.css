@@ -120,8 +120,10 @@
 }
 
 /* Elements & Items */
+/* Elements & Items */
 .trans-item {
   display: flex;
+  justify-content: space-between; /* Pushes content to the opposite ends */
   align-items: center;
   padding: 15px 0;
   border-bottom: 1px solid #f0f0f0;
@@ -185,9 +187,6 @@
   border-bottom: 1px solid #f7fafc;
 }
 
-.btn-done-res{
-  width: 10px;
-}
 .delete-btn-small, .del-exp {
   background: none;
   border: none;
@@ -222,5 +221,59 @@
   /* Hide the Print button itself and delete buttons on the paper */
   .printable-report button, .del-exp {
     display: none !important;
+  }
+}
+
+/* --- PRINT STYLES --- */
+@media print {
+  /* 1. Hide the Sidebar, Search, Form, and Delete Buttons */
+  .expense-form-container,
+  .trans-search,
+  .delete-btn-small,
+  .del-exp,
+  .summary-card {
+    display: none !important;
+  }
+
+  /* 2. Reset the layout for paper */
+  .transactions-container {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+  }
+
+  .trans-content-vertical {
+    display: block !important;
+  }
+
+  /* 3. Ensure the Transaction Log prints EVERY item */
+  .trans-list {
+    display: block !important;
+    overflow: visible !important; /* Prevents cutting off long lists */
+  }
+
+  .trans-item {
+    border-bottom: 1px solid #eee;
+    page-break-inside: avoid; /* Prevents a single item from splitting across two pages */
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+  }
+
+  /* 4. Style the Income Statement for the bottom of the page */
+  .bottom-report-section {
+    margin-top: 30px;
+    border-top: 2px solid #333;
+    padding-top: 20px;
+  }
+
+  /* Force background colors to print (if needed) */
+  .val-pos { color: green !important; }
+  .val-neg { color: red !important; }
+  .val-highlight { font-weight: bold !important; font-size: 20px !important; }
+
+  /* Set Page Margins */
+  @page {
+    margin: 15mm;
   }
 }

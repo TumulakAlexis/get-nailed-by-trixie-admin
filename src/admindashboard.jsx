@@ -7,9 +7,10 @@ import CalendarView from './components/calendarview';
 import BookingModal from './components/bookingmodal';
 import ClosedDay from './closedday';
 import TransactionsPage from './transactionspage'; 
+import ServicesPage from './servicespage'; 
 import './AdminDashboard.css';
 
-const AdminDashboard = () => {
+const AdminDashboard = ({ onLogout }) => { 
   const [activeTab, setActiveTab] = useState('dashboard');
   const [selectedDate, setSelectedDate] = useState(null);
   const [currentMonthDate, setCurrentMonthDate] = useState(new Date());
@@ -47,8 +48,11 @@ const AdminDashboard = () => {
       case 'transactions':
         return <TransactionsPage />;
 
-      case 'closed-days': // Updated to match Sidebar key
+      case 'closed-days':
         return <ClosedDay />;
+
+      case 'services-management': 
+        return <ServicesPage />;
 
       default:
         return (
@@ -62,13 +66,17 @@ const AdminDashboard = () => {
 
   return (
     <div className="admin-dashboard-layout">
-      <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+      {/* ADDED onLogout HERE */}
+      <Sidebar 
+        activeTab={activeTab} 
+        setActiveTab={setActiveTab} 
+        onLogout={onLogout} 
+      />
 
       <main className="admin-content">
         {renderContent()}
       </main>
 
-      {/* Booking Detail/Slot Modal Overlay */}
       {selectedDate && (
         <BookingModal
           date={selectedDate}

@@ -12,7 +12,7 @@ const TransactionsPage = () => {
 
   const transactions = useQuery(api.admin.getAllTransactions) ?? [];
   const expenses = useQuery(api.admin.getAllExpenses) ?? [];
-  
+
   const addExpense = useMutation(api.admin.addExpense);
   const deleteExpense = useMutation(api.admin.deleteExpense);
   const deleteTransaction = useMutation(api.admin.deleteTransaction);
@@ -53,13 +53,18 @@ const TransactionsPage = () => {
     } catch (err) { console.error(err); }
   };
 
-  const filteredTransactions = transactions.filter(t => 
+  const filteredTransactions = transactions.filter(t =>
     t.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <div className="transactions-container">
       {/* Top Header Cards */}
+      <div className="print-header-only" style={{ display: 'none' }}>
+        <h1>Salon Transaction Report</h1>
+        <p>Report Generated: {format(new Date(), 'PPPP p')}</p>
+        <hr />
+      </div>
       <div className="trans-header">
         <div className="summary-card dark">
           <span>Net Profit</span>
@@ -77,12 +82,12 @@ const TransactionsPage = () => {
           <div className="expense-form-container">
             <h3>Log New Expense</h3>
             <form onSubmit={handleAddExpense} className="expense-form">
-              <input 
-                type="text" placeholder="Item/Description" 
+              <input
+                type="text" placeholder="Item/Description"
                 value={expDesc} onChange={(e) => setExpDesc(e.target.value)} required
               />
-              <input 
-                type="number" placeholder="Amount" 
+              <input
+                type="number" placeholder="Amount"
                 value={expAmount} onChange={(e) => setExpAmount(e.target.value)} required
               />
               <select value={expCat} onChange={(e) => setExpCat(e.target.value)}>
@@ -97,8 +102,8 @@ const TransactionsPage = () => {
 
           <div className="log-header">
             <h2>Transaction Log</h2>
-            <input 
-              type="text" placeholder="Search customer..." 
+            <input
+              type="text" placeholder="Search customer..."
               value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
               className="trans-search"
             />
@@ -108,7 +113,8 @@ const TransactionsPage = () => {
             {filteredTransactions.map((t) => (
               <div key={t._id} className="trans-item">
                 <div className="trans-details">
-                  <h3>{t.services?.join(", ")}</h3>
+                  {/* FIXED: Extracting service names from objects to avoid [object Object] */}
+                  <h3>{t.services?.map(s => typeof s === 'object' ? s.name : s).join(", ")}</h3>
                   <p>{t.name} • {t.date || "No Date"}</p>
                 </div>
                 <div className="trans-actions-right">
@@ -126,7 +132,7 @@ const TransactionsPage = () => {
         <div className="bottom-report-section printable-report">
           <div className="report-card full-width">
             <h2>Income Statement</h2>
-            
+
             <div className="report-grid">
               {/* Revenue Column */}
               <div className="report-col">
@@ -158,21 +164,21 @@ const TransactionsPage = () => {
             </div>
 
             <div className="report-divider"></div>
-            
+
             <div className="report-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div className="report-row total" style={{ flex: 1 }}>
                 <span>NET PROFIT</span>
                 <span className="val-highlight">₱{stats.netIncome.toLocaleString()}</span>
               </div>
-              
+
               {/* SMALLER PRINT BUTTON AT THE BOTTOM */}
-              <button 
+              <button
                 onClick={handlePrint}
-                className="delete-btn-small" 
-                style={{ 
-                  width: 'auto', 
-                  padding: '5px 12px', 
-                  fontSize: '11px', 
+                className="delete-btn-small"
+                style={{
+                  width: 'auto',
+                  padding: '5px 12px',
+                  fontSize: '11px',
                   marginLeft: '20px',
                   borderRadius: '4px',
                   backgroundColor: '#f4f4f4',

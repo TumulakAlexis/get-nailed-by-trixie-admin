@@ -1,33 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import AdminLogin from './adminlogin'
-import AdminDashboard from './admindashboard';
+import React, { useState } from 'react';
+import AdminLogin from './AdminLogin'
+import AdminDashboard from './AdminDashboard';
 import './App.css';
 
 function App() {
-  // Check localStorage on load so Trixie stays logged in if she refreshes
+  // Initialize state based on localStorage string comparison
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     return localStorage.getItem('isTrixieLoggedIn') === 'true';
   });
 
-  // Function to handle successful login
+  // Called when loginAction returns true
   const handleLoginSuccess = (status) => {
-    setIsAuthenticated(status);
-    localStorage.setItem('isTrixieLoggedIn', status);
+    if (status) {
+      setIsAuthenticated(true);
+      localStorage.setItem('isTrixieLoggedIn', 'true');
+    }
   };
 
-  // Function to handle logout
+  // Called from the Sidebar logout button
   const handleLogout = () => {
     setIsAuthenticated(false);
     localStorage.removeItem('isTrixieLoggedIn');
+    // React automatically re-renders and shows the Login component
   };
 
   return (
     <div className="admin-app-container">
       {!isAuthenticated ? (
-        // Show the login page if not authenticated
         <AdminLogin onLogin={handleLoginSuccess} />
       ) : (
-        // Show the dashboard once logged in
         <AdminDashboard onLogout={handleLogout} />
       )}
     </div>
