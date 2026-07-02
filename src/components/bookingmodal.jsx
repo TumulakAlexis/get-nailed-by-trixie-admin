@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { format } from 'date-fns';
-import './BookingModal.css';
+import './bookingmodal.css';
 // Ensure you create this component in a separate file
 import PrintReceipt from './PrintReceipt';
 

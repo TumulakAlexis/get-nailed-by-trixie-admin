@@ -1,6 +1,6 @@
 import React from 'react';
 import { format } from 'date-fns';
-import './PrintReceipt.css';
+import './printreceipt.css';
 
 const PrintReceipt = ({ transaction }) => {
   if (!transaction) return null;
