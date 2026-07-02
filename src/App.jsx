@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import AdminLogin from './adminlogin'
+import AdminLogin from './AdminLogin'
 import AdminDashboard from './AdminDashboard';
 import './App.css';
 

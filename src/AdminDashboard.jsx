@@ -5,9 +5,9 @@ import Sidebar from './components/sidebar';
 import StatCards from './components/statcards';
 import CalendarView from './components/calendarview';
 import BookingModal from './components/bookingmodal';
-import ClosedDay from './closedday';
+import ClosedDay from './ClosedDay';
 import TransactionsPage from './transactionspage'; 
-import ServicesPage from './servicespage'; 
+import ServicesPage from './ServicesPage'; 
 import './AdminDashboard.css';
 
 const AdminDashboard = ({ onLogout }) => { 
