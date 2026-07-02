@@ -4,7 +4,7 @@ import { api } from "../convex/_generated/api";
 import { format, startOfMonth, endOfMonth, eachDayOfInterval } from 'date-fns';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark, faCalendarDay, faCalendarDays, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
-import './ClosedDay.css';
+import './closedday.css';
 
 const TIME_SLOTS = ["9:00 AM", "1:00 PM", "4:00 PM"];
 

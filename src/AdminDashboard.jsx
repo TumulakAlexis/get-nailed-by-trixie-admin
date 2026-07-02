@@ -5,10 +5,10 @@ import Sidebar from './components/sidebar';
 import StatCards from './components/statcards';
 import CalendarView from './components/calendarview';
 import BookingModal from './components/bookingmodal';
-import ClosedDay from './ClosedDay';
+import ClosedDay from './closedday';
 import TransactionsPage from './transactionspage'; 
-import ServicesPage from './ServicesPage'; 
-import './AdminDashboard.css';
+import ServicesPage from './servicespage'; 
+import './admindashboard.css';
 
 const AdminDashboard = ({ onLogout }) => { 
   const [activeTab, setActiveTab] = useState('dashboard');

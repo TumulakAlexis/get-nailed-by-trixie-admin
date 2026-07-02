@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAction } from "convex/react";
 import { api } from "../convex/_generated/api"; 
-import './AdminLogin.css';
+import './adminlogin.css';
 
 const AdminLogin = ({ onLogin }) => {
   const [password, setPassword] = useState('');

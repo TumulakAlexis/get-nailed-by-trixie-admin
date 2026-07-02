@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../convex/_generated/api";
-import './ServicesPage.css';
+import './servicespage.css';
 
 const ServicesPage = () => {
   const services = useQuery(api.services.getServices) || [];
