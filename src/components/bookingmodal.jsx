@@ -4,7 +4,7 @@ import { api } from "../../convex/_generated/api";
 import { format } from 'date-fns';
 import './bookingmodal.css';
 // Ensure you create this component in a separate file
-import PrintReceipt from './PrintReceipt';
+import PrintReceipt from './printreceipt';
 
 const TIME_SLOTS = ["9:00 AM", "1:00 PM", "4:00 PM"];
 
