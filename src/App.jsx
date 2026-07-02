@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import AdminLogin from './adminlogin'
-import AdminDashboard from './admindashboard';
+import AdminDashboard from './AdminDashboard';
 import './App.css';
 
 function App() {
