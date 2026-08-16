@@ -4,7 +4,7 @@ import { api } from "../convex/_generated/api";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as faStarSolid, faTrashCan, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { faStar as faStarRegular } from '@fortawesome/free-regular-svg-icons';
-import './adminReviews.css'; // Optional: style to match your admin panel
+import './adminreviews.css'; // Optional: style to match your admin panel
 
 const AdminReviews = () => {
   const data = useQuery(api.admin.getReviewsWithAnalytics);
