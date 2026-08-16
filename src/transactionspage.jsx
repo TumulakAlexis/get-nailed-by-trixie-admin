@@ -6,6 +6,7 @@ import './transactionspage.css';
 
 const TransactionsPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [visibleCount, setVisibleCount] = useState(20); // Track how many items to show
   const [expDesc, setExpDesc] = useState("");
   const [expAmount, setExpAmount] = useState("");
   const [expCat, setExpCat] = useState("Supplies");
@@ -34,7 +35,6 @@ const TransactionsPage = () => {
       .filter(t => t.date === todayStr)
       .reduce((acc, t) => acc + (Number(t.totalFee) || 0), 0);
 
-    // Group expenses by category for corporate insights
     const expensesByCategory = expenses.reduce((acc, e) => {
       acc[e.category] = (acc[e.category] || 0) + Number(e.amount);
       return acc;
@@ -65,9 +65,25 @@ const TransactionsPage = () => {
     } catch (err) { console.error(err); }
   };
 
-  const filteredTransactions = transactions.filter(t =>
-    t.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // --- FILTER & PAGINATION LOGIC ---
+  const filteredTransactions = useMemo(() => {
+    return transactions.filter(t =>
+      t.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [transactions, searchTerm]);
+
+  const displayedTransactions = useMemo(() => {
+    return filteredTransactions.slice(0, visibleCount);
+  }, [filteredTransactions, visibleCount]);
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+    setVisibleCount(20); // Reset pagination index on search change
+  };
+
+  const handleLoadMore = () => {
+    setVisibleCount(prev => prev + 20); // Load 20 more items
+  };
 
   return (
     <div className="transdash-container">
@@ -142,29 +158,38 @@ const TransactionsPage = () => {
               <h3>Transaction Ledger</h3>
               <input
                 type="text" placeholder="Filter customer..."
-                value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
+                value={searchTerm} onChange={handleSearchChange}
                 className="transdash-search"
               />
             </div>
 
             <div className="transdash-list">
-              {filteredTransactions.length === 0 ? (
+              {displayedTransactions.length === 0 ? (
                 <p className="transdash-empty-text">No transactions found.</p>
               ) : (
-                filteredTransactions.map((t) => (
-                  <div key={t._id} className="transdash-item">
-                    <div className="transdash-details">
-                      <h4>{t.services?.map(s => typeof s === 'object' ? s.name : s).join(", ")}</h4>
-                      <p>{t.name} &bull; {t.date || "No Date"}</p>
+                <>
+                  {displayedTransactions.map((t) => (
+                    <div key={t._id} className="transdash-item">
+                      <div className="transdash-details">
+                        <h4>{t.services?.map(s => typeof s === 'object' ? s.name : s).join(", ")}</h4>
+                        <p>{t.name} &bull; {t.date || "No Date"}</p>
+                      </div>
+                      <div className="transdash-actions">
+                        <span className="transdash-amount">
+                          + ₱{(Number(t.totalFee) || 0).toLocaleString()}
+                        </span>
+                        <button className="transdash-del-btn" onClick={() => deleteTransaction({ id: t._id })}>×</button>
+                      </div>
                     </div>
-                    <div className="transdash-actions">
-                      <span className="transdash-amount">
-                        + ₱{(Number(t.totalFee) || 0).toLocaleString()}
-                      </span>
-                      <button className="transdash-del-btn" onClick={() => deleteTransaction({ id: t._id })}>×</button>
-                    </div>
-                  </div>
-                ))
+                  ))}
+
+                  {/* Load More Trigger */}
+                  {visibleCount < filteredTransactions.length && (
+                    <button className="transdash-load-more-btn" onClick={handleLoadMore}>
+                      Load More ({filteredTransactions.length - visibleCount} remaining)
+                    </button>
+                  )}
+                </>
               )}
             </div>
           </div>
