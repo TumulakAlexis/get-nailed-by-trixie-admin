@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useMutation, useQuery } from "convex/react"; // Added useQuery
+import { useMutation, useQuery } from "convex/react";
 import { api } from "../convex/_generated/api";
 import { format, startOfMonth, endOfMonth, eachDayOfInterval } from 'date-fns';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -15,7 +15,6 @@ const ClosedDay = () => {
   const manualOccupy = useMutation(api.admin.manualOccupy);
   const massUnblock = useMutation(api.admin.massUnblock);
   
-  // Real-time check for existing client bookings on selected dates
   const existingBookings = useQuery(api.admin.checkExistingBookings, { dates: dateList });
   const hasConflict = existingBookings && existingBookings.length > 0;
 
@@ -45,7 +44,6 @@ const ClosedDay = () => {
   const handleCloseDays = async () => {
     if (dateList.length === 0) return alert("Please select a date or month");
 
-    // BLOCK IF CONFLICT EXISTS
     if (hasConflict) {
       const conflictDates = [...new Set(existingBookings.map(b => b.date))].join(", ");
       return alert(`Action Blocked: The following dates have client bookings: ${conflictDates}. You must cancel or reschedule them first.`);
@@ -82,34 +80,38 @@ const ClosedDay = () => {
   };
 
   return (
-    <div className="closed-day-container">
-      <h1 className="page-title">Set Closed Days</h1>
+    <div className="closeddash-container">
+      <header className="closeddash-header">
+        <h1>Set Closed Days</h1>
+        <p>Manage calendar availability, block out holidays, or open up dates for client reservations.</p>
+      </header>
       
-      <div className="setup-box">
-        <div className="mode-toggle">
-          <button className={`toggle-btn ${!isMonthMode ? 'active' : ''}`} onClick={() => setIsMonthMode(false)}>
+      <div className="closeddash-setup-box">
+        <div className="closeddash-mode-toggle">
+          <button className={`closeddash-toggle-btn ${!isMonthMode ? 'active' : ''}`} onClick={() => setIsMonthMode(false)}>
             <FontAwesomeIcon icon={faCalendarDay} style={{marginRight: '8px'}} /> Single Days
           </button>
-          <button className={`toggle-btn ${isMonthMode ? 'active' : ''}`} onClick={() => setIsMonthMode(true)}>
+          <button className={`closeddash-toggle-btn ${isMonthMode ? 'active' : ''}`} onClick={() => setIsMonthMode(true)}>
             <FontAwesomeIcon icon={faCalendarDays} style={{marginRight: '8px'}} /> Whole Month
           </button>
         </div>
 
-        <div className="date-input-wrapper">
-          <input type={isMonthMode ? "month" : "date"} className="date-picker-input" onChange={handleDateSelect} />
+        <div className="closeddash-date-input-wrapper">
+          <label>Select {isMonthMode ? "Month" : "Date"}</label>
+          <input type={isMonthMode ? "month" : "date"} className="closeddash-date-picker-input" onChange={handleDateSelect} />
         </div>
 
         {dateList.length > 0 && (
-          <div className="selected-dates-wrapper">
-            <div className="list-header">
+          <div className="closeddash-selected-dates-wrapper">
+            <div className="closeddash-list-header">
               <span>{dateList.length} days selected</span>
-              <button className="clear-all" onClick={() => setDateList([])}>Clear All</button>
+              <button className="closeddash-clear-all" onClick={() => setDateList([])}>Clear All</button>
             </div>
-            <div className="tags-container">
+            <div className="closeddash-tags-container">
               {dateList.sort().map(date => (
-                <div key={date} className="date-tag">
+                <div key={date} className="closeddash-date-tag">
                   {format(new Date(date), 'MMM dd, yyyy')}
-                  <button onClick={() => removeDate(date)} className="remove-tag-btn">
+                  <button onClick={() => removeDate(date)} className="closeddash-remove-tag-btn">
                     <FontAwesomeIcon icon={faXmark} />
                   </button>
                 </div>
@@ -118,9 +120,9 @@ const ClosedDay = () => {
           </div>
         )}
         
-        <div className="button-group">
+        <div className="closeddash-button-group">
           <button 
-            className={`btn-confirm-close ${hasConflict ? 'btn-conflict' : ''}`} 
+            className={`closeddash-btn closeddash-btn-confirm ${hasConflict ? 'closeddash-btn-conflict' : ''}`} 
             onClick={handleCloseDays}
             disabled={dateList.length === 0}
           >
@@ -129,7 +131,7 @@ const ClosedDay = () => {
             ) : "Block Schedule"}
           </button>
 
-          <button className="btn-unblock" onClick={handleUnblockDays} disabled={dateList.length === 0}>
+          <button className="closeddash-btn closeddash-btn-unblock" onClick={handleUnblockDays} disabled={dateList.length === 0}>
             Unblock / Open
           </button>
         </div>

@@ -1,74 +1,119 @@
+/* ==========================================================================
+   Admin Dashboard Layout & Unique Modern Styles 
+   ========================================================================== */
+
 .admin-dashboard-layout {
   display: flex;
   height: 100vh;
-}
-
-/* Sidebar Styles */
-.admin-sidebar {
-  width: 170px; /* The Sage Green from your image */
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-}
-
-.sidebar-brand {
-  font-size: 1.2rem;
-  color: #2D3A3A;
-  margin: 0;
-  letter-spacing: 1px;
-}
-
-.nav-item {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  padding: 12px 15px;
-  margin-top: 10px;
-  border-radius: 8px;
-  border: none;
-  background: transparent;
-  color: #2D3A3A;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.nav-item.active {
-  background-color: #2D3A3A; /* Dark Slate highlight */
-  color: white;
-}
-
-/* Content Area */
-.admin-content {
-  flex: 1;
-  margin-left: 260px; /* This MUST be equal to or greater than sidebar width */
-  padding: 40px;
-  width: calc(100% - 260px); /* Explicitly tells the content area how much space it has */
+  width: 100vw;
+  overflow: hidden;
+  background-color: #f8faf9;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   box-sizing: border-box;
 }
 
-.content-header {
-  max-width: 1000px;
-  margin: 0 auto 30px auto;
-  margin-top: -80px;
-  color:#2D3A3A;
-  font-size: 20px;
+/* Content Area Match with Sidebar (100px width base) */
+.admin-dashboard-content {
+  flex: 1;
+  margin-left: 100px;
+  width: calc(100% - 100px);
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 36px 40px;
+  box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
 }
 
-.calendar-wrapper {
-  max-width: 1000px;
+.admin-dashboard-content-inner {
+  max-width: 1100px;
   margin: 0 auto;
-  margin-bottom: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
-.stat-card {  
+.admin-dashboard-content-header {
+  width: 100%;
+  margin-top: 0;
+  color: #2D3A3A;
+}
+
+.admin-dashboard-calendar-wrapper {
+  width: 100%;
+  margin: 0 auto;
+  padding-bottom: 40px;
+}
+
+.admin-dashboard-stat-card {  
   color: white;
-  padding: 20px 40px;
-  border-radius: 25px;
+  padding: 20px 30px;
+  border-radius: 20px;
   text-align: center;
-  margin-left: 15px;
+  box-shadow: 0 10px 25px rgba(45, 58, 58, 0.06);
+  background: #2D3A3A;
 }
 
-.stat-value {
-  font-size: 3rem;
+.admin-dashboard-stat-value {
+  font-size: 2.75rem;
+  font-weight: 700;
   margin: 0;
+}
+
+.admin-dashboard-error-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  gap: 16px;
+  color: #2D3A3A;
+  font-weight: 600;
+}
+
+.admin-dashboard-error-view button {
+  padding: 10px 24px;
+  border-radius: 50px;
+  border: none;
+  background: #2D3A3A;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(45, 58, 58, 0.2);
+  transition: all 0.2s ease;
+}
+
+.admin-dashboard-error-view button:hover {
+  background: #3A5A40;
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   iPad & Tablet Responsive Optimizations (768px - 1024px)
+   ========================================================================== */
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  .admin-dashboard-content {
+    margin-left: 92px; /* Matches iPad sidebar width */
+    width: calc(100% - 92px);
+    padding: 28px 24px;
+  }
+
+  .admin-dashboard-content-inner {
+    max-width: 100%;
+    gap: 20px;
+  }
+
+  .admin-dashboard-calendar-wrapper {
+    padding-bottom: 30px;
+  }
+}
+
+/* Extra safety for smaller tablet viewports / orientation switches */
+@media screen and (max-width: 768px) {
+  .admin-dashboard-content {
+    margin-left: 80px;
+    width: calc(100% - 80px);
+    padding: 20px 16px;
+  }
 }

@@ -1,214 +1,400 @@
-.transactions-container {
-  padding: 30px;
+/* ==========================================================================
+   Corporate Financial Dashboard Styling (Scoped with .transdash-)
+   ========================================================================== */
+
+.transdash-container {
+  padding: 24px;
   background-color: #f4f7f6;
   min-height: 100vh;
-  font-family: 'Inter', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   display: flex;
   flex-direction: column;
-  gap: 30px;
-}
-
-/* 1. Header Cards (Top Row) */
-.trans-header {
-  display: flex;
-  gap: 20px;
-}
-
-.summary-card {
-  padding: 25px;
-  border-radius: 24px;
-  flex: 1;
-}
-
-.summary-card.dark {
-  background-color: #2E403D;
-  color: #48C78E;
-}
-
-.summary-card.light {
-  background-color: #fff;
-  color: #2D3A3A;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-}
-
-.summary-card span {
-  font-size: 0.9rem;
-  font-weight: 600;
-  opacity: 0.8;
-}
-
-/* 2. Main Content Stack (Vertical) */
-.trans-content-vertical {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-}
-
-/* 3. Transaction Log Section (Middle Row) */
-.main-log-section {
-  background: white;
-  border-radius: 24px;
-  padding: 25px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-  width: 100%;
+  gap: 24px;
   box-sizing: border-box;
 }
 
-.log-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 25px;
-}
-
-.trans-search {
-  padding: 10px 15px;
-  border-radius: 12px;
-  border: 1px solid #ddd;
-  width: 250px;
-}
-
-/* 4. Income Statement Section (Bottom Row) */
-.bottom-report-section {
+/* 1. KPI Grid Row */
+.transdash-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
   width: 100%;
 }
 
-.report-card.full-width {
-  background: #fff;
-  padding: 30px;
-  border-radius: 24px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-  border: 1px solid #eee;
-}
-
-/* Two-Column Grid inside the Statement */
-.report-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-  margin-top: 20px;
-}
-
-.report-row.header {
-  font-weight: 700;
-  font-size: 1.1rem;
-  margin-bottom: 15px;
-  color: #1a202c;
-  display: flex;
-  justify-content: space-between;
-  border-bottom: 2px solid #f7fafc;
-  padding-bottom: 10px;
-}
-
-.report-footer {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 25px;
-  padding-top: 20px;
-  border-top: 2px solid #333;
-}
-
-.report-row.total {
-  width: 320px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #f8fafc;
-  padding: 15px 20px;
-  border-radius: 12px;
-  font-weight: bold;
-}
-
-/* Elements & Items */
-/* Elements & Items */
-.trans-item {
-  display: flex;
-  justify-content: space-between; /* Pushes content to the opposite ends */
-  align-items: center;
-  padding: 15px 0;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.trans-icon-block {
-  width: 45px;
-  height: 45px;
-  background-color: #2E403D;
-  border-radius: 12px;
-  margin-right: 15px;
-}
-
-.trans-amount.positive { color: #2D3A3A; }
-.val.negative, .exp-amt { color: #e74c3c; font-weight: 600; }
-.val-highlight { color: #2f855a; font-weight: 800; font-size: 1.4rem; }
-
-/* Expense Form Styling */
-.expense-form-container {
+.transdash-kpi-card {
   background: #ffffff;
   padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  margin-bottom: 30px;
-  border: 1px solid #edf2f7;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(45, 58, 58, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-.expense-form {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr auto;
-  gap: 12px;
+.transdash-kpi-card.transdash-dark {
+  background: #2D3A3A;
+  color: #ffffff;
+}
+
+.transdash-kpi-card span {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #8ba08e;
+}
+
+.transdash-kpi-card.transdash-dark span {
+  color: #a3c1a6;
+}
+
+.transdash-kpi-header-row {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
 }
 
-.expense-form input, .expense-form select {
-  padding: 10px 14px;
+.transdash-badge {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 0.65rem;
+  font-weight: 600;
+}
+
+.transdash-kpi-card h2 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin: 10px 0 4px 0;
+  letter-spacing: -0.02em;
+}
+
+.transdash-kpi-sub {
+  font-size: 0.75rem;
+  opacity: 0.8;
+  margin: 0;
+}
+
+.transdash-kpi-sub.positive { color: #2f855a; font-weight: 600; }
+.transdash-kpi-sub.negative { color: #e53e3e; font-weight: 600; }
+.transdash-kpi-card.transdash-dark .transdash-kpi-sub { color: #d1d5db; }
+
+/* 2. Workspace Grid Layout */
+.transdash-workspace {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.transdash-column {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.transdash-panel {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(45, 58, 58, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.transdash-panel h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #2D3A3A;
+  margin: 0 0 16px 0;
+}
+
+/* 3. Expense Logging Form */
+.transdash-expense-form {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.transdash-expense-form input,
+.transdash-expense-form select {
+  padding: 10px 12px;
   border: 1px solid #e2e8f0;
-  border-radius: 8px;
+  border-radius: 10px;
+  background-color: #f8fafc;
+  font-size: 0.85rem;
+}
+
+.transdash-expense-form button {
+  background-color: #2D3A3A;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background 0.2s;
+}
+
+.transdash-expense-form button:hover {
+  background-color: #3b4d4d;
+}
+
+/* 4. Transaction Ledger Section */
+.transdash-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.transdash-panel-header h3 {
+  margin: 0;
+}
+
+.transdash-search {
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  font-size: 0.85rem;
+  width: 180px;
   background-color: #f8fafc;
 }
 
-.expense-form button {
-  background-color: #4a5568;
-  color: white;
-  padding: 10px 20px;
+.transdash-list {
+  max-height: 340px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-right: 4px;
+}
+
+.transdash-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid #edf2f7;
+}
+
+.transdash-details h4 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #1a202c;
+  margin: 0 0 2px 0;
+}
+
+.transdash-details p {
+  font-size: 0.75rem;
+  color: #718096;
+  margin: 0;
+}
+
+.transdash-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.transdash-amount {
+  font-weight: 700;
+  color: #2f855a;
+  font-size: 0.95rem;
+}
+
+.transdash-del-btn,
+.transdash-del-exp {
+  background: none;
+  border: none;
+  color: #a0aec0;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: bold;
+  padding: 0 4px;
+}
+
+.transdash-del-btn:hover,
+.transdash-del-exp:hover {
+  color: #e53e3e;
+}
+
+/* 5. Income Statement Section */
+.statement-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.statement-header-row h3 {
+  margin: 0;
+}
+
+.transdash-print-btn {
+  background: #edf2f7;
+  border: 1px solid #cbd5e0;
+  color: #4a5568;
+  padding: 6px 12px;
   border-radius: 8px;
+  font-size: 0.75rem;
   font-weight: 600;
   cursor: pointer;
 }
 
-/* Helpers & Lists */
-.expense-breakdown {
-  max-height: 250px;
-  overflow-y: auto;
+.transdash-print-btn:hover {
+  background: #e2e8f0;
 }
 
-.expense-line-item {
+.statement-row.header-row {
   display: flex;
   justify-content: space-between;
-  padding: 8px 0;
-  border-bottom: 1px solid #f7fafc;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #2d3748;
 }
 
-.delete-btn-small, .del-exp {
-  background: none;
-  border: none;
-  color: #cbd5e0;
-  cursor: pointer;
+.statement-sub {
+  font-size: 0.75rem;
+  color: #718096;
+  margin: 4px 0 12px 0;
 }
 
-.delete-btn-small:hover, .del-exp:hover {
+.val-pos { color: #2f855a; }
+.val-neg { color: #e53e3e; }
+
+.transdash-divider {
+  height: 1px;
+  background-color: #edf2f7;
+  margin: 16px 0;
+}
+
+.transdash-cat-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: #4a5568;
+  padding: 4px 0;
+}
+
+.cat-amt {
+  font-weight: 600;
+}
+
+.transdash-expense-list-scroll {
+  max-height: 160px;
+  overflow-y: auto;
+  margin-top: 10px;
+  border-top: 1px dashed #e2e8f0;
+  padding-top: 8px;
+}
+
+.transdash-expense-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  font-size: 0.8rem;
+}
+
+.exp-title {
+  font-weight: 600;
+  color: #2d3748;
+  margin-right: 8px;
+}
+
+.exp-category-tag {
+  background: #edf2f7;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 0.65rem;
+  color: #4a5568;
+}
+
+.exp-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
   color: #e53e3e;
 }
 
-@media (max-width: 900px) {
-  .report-grid { grid-template-columns: 1fr; }
-  .expense-form { grid-template-columns: 1fr; }
+.transdash-net-box {
+  background: #f0fff4;
+  border: 1px solid #c6f6d5;
+  padding: 16px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
 }
 
+.net-label {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #22543d;
+  letter-spacing: 0.04em;
+}
+
+.net-sub {
+  font-size: 0.7rem;
+  color: #276749;
+  margin: 2px 0 0 0;
+}
+
+.net-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #2f855a;
+}
+
+.transdash-empty-text {
+  font-size: 0.8rem;
+  color: #a0aec0;
+  font-style: italic;
+  margin: 4px 0;
+}
+
+/* ==========================================================================
+   iPad & Tablet Responsive Adaptations (768px - 1024px)
+   ========================================================================== */
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  .transdash-container {
+    padding: 18px;
+    gap: 18px;
+  }
+
+  .transdash-kpi-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2x2 cards for iPad layout */
+    gap: 12px;
+  }
+
+  .transdash-workspace {
+    grid-template-columns: 1fr; /* Stack columns on iPads to prevent horizontal crowding */
+    gap: 18px;
+  }
+
+  .transdash-expense-form {
+    grid-template-columns: 1fr 1fr; /* 2x2 grid for form controls on tablet */
+  }
+  
+  .transdash-expense-form button {
+    grid-column: span 2;
+  }
+}
+
+/* ==========================================================================
+   Print Rules
+   ========================================================================== */
 @media print {
-  /* Hide everything */
   body * {
     visibility: hidden;
   }
-  /* Show only the report section */
   .printable-report, .printable-report * {
     visibility: visible;
   }
@@ -218,62 +404,10 @@
     top: 0;
     width: 100%;
   }
-  /* Hide the Print button itself and delete buttons on the paper */
-  .printable-report button, .del-exp {
-    display: none !important;
-  }
-}
-
-/* --- PRINT STYLES --- */
-@media print {
-  /* 1. Hide the Sidebar, Search, Form, and Delete Buttons */
-  .expense-form-container,
-  .trans-search,
-  .delete-btn-small,
-  .del-exp,
-  .summary-card {
-    display: none !important;
-  }
-
-  /* 2. Reset the layout for paper */
-  .transactions-container {
-    padding: 0;
-    margin: 0;
-    width: 100%;
-  }
-
-  .trans-content-vertical {
+  .transdash-print-header {
     display: block !important;
   }
-
-  /* 3. Ensure the Transaction Log prints EVERY item */
-  .trans-list {
-    display: block !important;
-    overflow: visible !important; /* Prevents cutting off long lists */
-  }
-
-  .trans-item {
-    border-bottom: 1px solid #eee;
-    page-break-inside: avoid; /* Prevents a single item from splitting across two pages */
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 0;
-  }
-
-  /* 4. Style the Income Statement for the bottom of the page */
-  .bottom-report-section {
-    margin-top: 30px;
-    border-top: 2px solid #333;
-    padding-top: 20px;
-  }
-
-  /* Force background colors to print (if needed) */
-  .val-pos { color: green !important; }
-  .val-neg { color: red !important; }
-  .val-highlight { font-weight: bold !important; font-size: 20px !important; }
-
-  /* Set Page Margins */
-  @page {
-    margin: 15mm;
+  .transdash-print-btn, .transdash-del-exp {
+    display: none !important;
   }
 }

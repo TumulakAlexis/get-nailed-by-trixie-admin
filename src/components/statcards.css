@@ -1,50 +1,116 @@
-.stats-container {
-  display: flex;
-  justify-content: center; /* Keeps the cards centered */
-  align-items: center;
-  gap: 15px; /* Adjust spacing between cards */
-  padding: 10px;
+/* ==========================================================================
+   Modern StatCards Styling (Prefixed to avoid global leakage)
+   ========================================================================== */
+
+.statcards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 20px;
+  width: 100%;
   margin: 0 auto;
+  box-sizing: border-box;
 }
 
-.stat-card {
-  /* Control the width of the card */
-  width: 190px; 
-  height: 50px; /* Reduced height */
-  
-  background-color: #2d3a3a;
-  border-radius: 20px; /* Rounded corners */
+.statcards-card {
+  position: relative;
+  background: linear-gradient(135deg, rgba(45, 58, 58, 0.95) 0%, rgba(30, 39, 39, 0.98) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  padding: 5px;
-  transition: transform 0.2s ease;
+  align-items: flex-start;
+  padding: 22px 24px;
+  box-shadow: 0 10px 30px rgba(45, 58, 58, 0.12),
+              0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-sizing: border-box;
+  min-height: 105px;
 }
 
-.stat-label {
-  font-family:'Calibri', 'serif'; /* Match your logo style */
-  font-size: 0.55rem; /* Very small labels as seen in image */
+.statcards-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 36px rgba(45, 58, 58, 0.18),
+              0 2px 6px rgba(0, 0, 0, 0.15);
+  border-color: rgba(139, 160, 142, 0.3);
+}
+
+/* Subtle background accent glow per card type */
+.statcards-glow-accent {
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  opacity: 0.1;
+  filter: blur(20px);
+  pointer-events: none;
+}
+
+.statcards-total .statcards-glow-accent { background: #ffffff; }
+.statcards-pending .statcards-glow-accent { background: #f2994a; }
+.statcards-completed .statcards-glow-accent { background: #8ba08e; }
+.statcards-canceled .statcards-glow-accent { background: #eb5757; }
+
+.statcards-label {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
   text-transform: uppercase;
   color: #8ba08e;
-  letter-spacing: 1px;
-  margin-bottom: 2px;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+  z-index: 1;
 }
 
-.stat-value {
-  font-family: 'Calibri', 'serif';
-  font-size: 1.8rem; /* Large enough to be the focal point */
+.statcards-value {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 2.1rem;
   font-weight: 800;
   line-height: 1;
+  margin: 0;
+  z-index: 1;
+  letter-spacing: -0.02em;
 }
 
-/* Colors based on your screenshots */
-.stat-card.total .stat-value { color: #ffffff; }
-.stat-card.pending .stat-value { color: #f2994a; } /* Orange */
-.stat-card.completed .stat-value { color:  #8ba08e; } /* Sage Green */
-.stat-card.canceled .stat-value { color: #eb5757; }
+/* Color variations matching your theme and metrics */
+.statcards-card.statcards-total .statcards-value { color: #ffffff; }
+.statcards-card.statcards-pending .statcards-value { color: #f2994a; } /* Vibrant Amber */
+.statcards-card.statcards-completed .statcards-value { color: #a3c1a6; } /* Soft Bright Sage */
+.statcards-card.statcards-canceled .statcards-value { color: #ff6b6b; } /* Modern Coral Red */
 
-/* Remove the specific background from your previous class if it was overwriting */
-.stat-card {
-  border-right: none !important;
+/* Loading Animation State */
+.statcards-spinner {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  border-top-color: #ffffff;
+  animation: statcards-spin 0.8s linear infinite;
+}
+
+@keyframes statcards-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ==========================================================================
+   iPad & Tablet Responsive Rules (768px - 1024px)
+   ========================================================================== */
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  .statcards-container {
+    grid-template-columns: repeat(2, 1fr); /* 2x2 grid looks cleaner on iPads */
+    gap: 16px;
+  }
+
+  .statcards-card {
+    padding: 20px 20px;
+    min-height: 100px;
+  }
+
+  .statcards-value {
+    font-size: 1.9rem;
+  }
 }

@@ -27,7 +27,7 @@ const AdminDashboard = ({ onLogout }) => {
       case 'dashboard':
         return (
           <>
-            <div className="content-header">
+            <div className="admin-dashboard-content-header">
               <StatCards
                 total={statsData?.total}
                 pending={statsData?.pending}
@@ -35,7 +35,7 @@ const AdminDashboard = ({ onLogout }) => {
                 canceled={statsData?.canceled}
               />
             </div>
-            <div className="calendar-wrapper">
+            <div className="admin-dashboard-calendar-wrapper">
               <CalendarView
                 currentMonth={currentMonthDate}
                 setCurrentMonth={setCurrentMonthDate}
@@ -56,7 +56,7 @@ const AdminDashboard = ({ onLogout }) => {
 
       default:
         return (
-          <div className="error-view">
+          <div className="admin-dashboard-error-view">
             <p>Page not found.</p>
             <button onClick={() => setActiveTab('dashboard')}>Return to Dashboard</button>
           </div>
@@ -66,15 +66,16 @@ const AdminDashboard = ({ onLogout }) => {
 
   return (
     <div className="admin-dashboard-layout">
-      {/* ADDED onLogout HERE */}
       <Sidebar 
         activeTab={activeTab} 
         setActiveTab={setActiveTab} 
         onLogout={onLogout} 
       />
 
-      <main className="admin-content">
-        {renderContent()}
+      <main className="admin-dashboard-content">
+        <div className="admin-dashboard-content-inner">
+          {renderContent()}
+        </div>
       </main>
 
       {selectedDate && (

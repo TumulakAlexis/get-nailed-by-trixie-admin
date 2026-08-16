@@ -13,12 +13,13 @@ const StatCards = ({ total, pending, completed, canceled }) => {
   const isLoading = total === undefined;
 
   return (
-    <div className="stats-container">
+    <div className="statcards-container">
       {stats.map((stat, index) => (
-        <div key={index} className={`stat-card ${stat.type}`}>
-          <span className="stat-label">{stat.label}</span>
-          <h2 className="stat-value">
-            {isLoading ? "..." : stat.value}
+        <div key={index} className={`statcards-card statcards-${stat.type}`}>
+          <div className="statcards-glow-accent"></div>
+          <span className="statcards-label">{stat.label}</span>
+          <h2 className="statcards-value">
+            {isLoading ? <span className="statcards-spinner"></span> : stat.value}
           </h2>
         </div>
       ))}

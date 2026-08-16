@@ -1,41 +1,55 @@
-/* Toggle Switch Styling */
-.mode-toggle {
-  display: flex;
-  background: #f0f2f0;
-  padding: 5px;
-  border-radius: 50px;
-  width: fit-content;
-  margin-bottom: 10px;
-}
+/* ==========================================================================
+   Modern Closed Day Management Styling (Scoped with .closeddash-)
+   ========================================================================== */
 
-.closed-day-container {
-  padding: 40px;
+.closeddash-container {
+  padding: 32px;
   max-width: 900px;
-}
-
-.page-title {
-  margin-right: 450px;
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: #2D3A3A;
-  margin-bottom: 30px;
-  letter-spacing: -1px;
-}
-
-.setup-box {
+  margin: 0 auto;
+  background-color: #f4f7f6;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 24px;
-  background: white;
-  padding: 30px;
-  border-radius: 24px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
-  width: fit-content;
-  min-width: 400px;
+}
+
+.closeddash-header {
+  background: #ffffff;
+  padding: 24px 32px;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(45, 58, 58, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.closeddash-header h1 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #2D3A3A;
+  margin: 0 0 4px 0;
+  letter-spacing: -0.02em;
+}
+
+.closeddash-header p {
+  color: #718096;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.closeddash-setup-box {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  background: #ffffff;
+  padding: 32px;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(45, 58, 58, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.04);
 }
 
 /* Toggle Switch */
-.mode-toggle {
+.closeddash-mode-toggle {
   display: flex;
   background: #f4f6f4;
   padding: 6px;
@@ -43,7 +57,7 @@
   width: fit-content;
 }
 
-.toggle-btn {
+.closeddash-toggle-btn {
   border: none;
   padding: 10px 20px;
   border-radius: 10px;
@@ -57,64 +71,100 @@
   align-items: center;
 }
 
-.toggle-btn.active {
+.closeddash-toggle-btn.active {
   background: #ffffff;
   color: #2D3A3A;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 /* Modern Input */
-.date-input-wrapper {
-  position: relative;
-  width: 350px;
+.closeddash-date-input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  max-width: 350px;
 }
 
-.date-picker-input {
+.closeddash-date-input-wrapper label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #4a5568;
+  letter-spacing: 0.04em;
+}
+
+.closeddash-date-picker-input {
   width: 100%;
-  padding: 14px 20px;
-  background-color: #ffffff;
-  border: 2px solid #eef0ee;
-  border-radius: 15px;
+  padding: 12px 16px;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
   font-family: inherit;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 600;
   color: #2D3A3A;
   outline: none;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   cursor: pointer;
+  box-sizing: border-box;
 }
 
-.date-picker-input:hover {
+.closeddash-date-picker-input:hover {
   border-color: #8BA08E;
 }
 
-.date-picker-input:focus {
+.closeddash-date-picker-input:focus {
   border-color: #2D3A3A;
-  box-shadow: 0 0 0 4px rgba(139, 160, 142, 0.1);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(45, 58, 58, 0.08);
 }
 
 /* Tag Area */
-.selected-dates-wrapper {
-  background: #fcfdfc;
+.closeddash-selected-dates-wrapper {
+  background: #f8fafc;
   padding: 20px;
-  border-radius: 18px;
-  border: 1px solid #f0f2f0;
+  border-radius: 16px;
+  border: 1px solid #edf2f7;
 }
 
-.tags-container {
+.closeddash-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #4a5568;
+  margin-bottom: 12px;
+}
+
+.closeddash-clear-all {
+  background: none;
+  border: none;
+  color: #e53e3e;
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.closeddash-clear-all:hover {
+  text-decoration: underline;
+}
+
+.closeddash-tags-container {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 12px;
-  max-height: 200px;
+  max-height: 220px;
   overflow-y: auto;
+  padding-right: 4px;
 }
 
-.date-tag {
+.closeddash-date-tag {
   background-color: #2D3A3A;
   color: #ffffff;
   padding: 6px 14px;
-  border-radius: 50px;
+  border-radius: 30px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -122,117 +172,119 @@
   font-weight: 600;
 }
 
-.remove-tag-btn {
+.closeddash-remove-tag-btn {
   background: none;
   border: none;
-  color: #8BA08E;
+  color: #a3c1a6;
   cursor: pointer;
   padding: 0;
   font-size: 0.9rem;
+  display: flex;
+  align-items: center;
   transition: color 0.2s;
 }
 
-.remove-tag-btn:hover {
+.closeddash-remove-tag-btn:hover {
   color: #ff6b6b;
 }
 
-/* Confirm Button */
-.btn-confirm-close {
+/* Buttons */
+.closeddash-button-group {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.closeddash-btn {
+  padding: 14px 28px;
+  border-radius: 14px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.closeddash-btn-confirm {
   background-color: #2D3A3A;
   color: white;
-  padding: 16px 40px;
-  border-radius: 50px;
-  border: none;
-  font-weight: 700;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 8px 20px rgba(45, 58, 58, 0.15);
+  box-shadow: 0 4px 12px rgba(45, 58, 58, 0.15);
+  flex: 1;
 }
 
-.btn-confirm-close:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 25px rgba(45, 58, 58, 0.2);
+.closeddash-btn-confirm:hover:not(:disabled) {
+  background-color: #3b4d4d;
+  transform: translateY(-1px);
 }
 
-.btn-confirm-close:disabled {
-  background-color: #e0e0e0;
-  color: #a0a0a0;
+.closeddash-btn-confirm:disabled {
+  background-color: #e2e8f0;
+  color: #a0aec0;
   cursor: not-allowed;
   box-shadow: none;
 }
 
-.button-group {
-  display: flex;
-  gap: 15px;
-  margin-top: 10px;
-}
-
-.btn-unblock {
-  background-color: transparent;
-  color: #2D3A3A;
-  padding: 16px 30px;
-  border-radius: 50px;
-  border: 2px solid #2D3A3A;
-  font-weight: 700;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn-unblock:hover:not(:disabled) {
-  background-color: #f8faf8;
-  border-color: #8BA08E;
-}
-
-.btn-unblock:disabled {
-  border-color: #e0e0e0;
-  color: #a0a0a0;
-  cursor: not-allowed;
-}
-
-/* Ensure the tags container handles many days gracefully */
-.tags-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 12px;
-  max-height: 250px; /* Increased for month mode */
-  overflow-y: auto;
-  padding-right: 5px;
-}
-
-/* ... existing styles ... */
-
-.btn-confirm-close.btn-conflict {
-  background: #f39c12; /* Warning Orange */
+.closeddash-btn-conflict {
+  background: #dd6b20 !important;
   color: white;
-  border: none;
-  cursor: not-allowed;
-  animation: pulse-warning 2s infinite;
+  animation: closeddash-pulse-warning 2s infinite;
 }
 
-.btn-confirm-close.btn-conflict:hover {
-  background: #e67e22; /* Slightly darker orange */
+.closeddash-btn-conflict:hover {
+  background: #c05621 !important;
   transform: none;
 }
 
-@keyframes pulse-warning {
-  0% {
-    box-shadow: 0 0 0 0 rgba(243, 156, 18, 0.4);
-  }
-  70% {
-    box-shadow: 0 0 0 10px rgba(243, 156, 18, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(243, 156, 18, 0);
-  }
+@keyframes closeddash-pulse-warning {
+  0% { box-shadow: 0 0 0 0 rgba(221, 107, 32, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(221, 107, 32, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(221, 107, 32, 0); }
 }
 
-.btn-unblock {
-  /* Ensure it looks consistent with the confirm button */
-  padding: 16px 40px;
-  border-radius: 50px;
-  font-weight: 700;
-  font-size: 1rem;
+.closeddash-btn-unblock {
+  background-color: #edf2f7;
+  color: #2D3A3A;
+  border: 1px solid #cbd5e0;
+}
+
+.closeddash-btn-unblock:hover:not(:disabled) {
+  background-color: #e2e8f0;
+}
+
+.closeddash-btn-unblock:disabled {
+  background-color: #f8fafc;
+  border-color: #e2e8f0;
+  color: #cbd5e0;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   iPad & Tablet Responsive Adaptations (768px - 1024px)
+   ========================================================================== */
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  .closeddash-container {
+    padding: 20px;
+    gap: 18px;
+    max-width: 100%;
+  }
+
+  .closeddash-setup-box {
+    padding: 24px;
+  }
+
+  .closeddash-date-input-wrapper {
+    max-width: 100%;
+  }
+
+  .closeddash-button-group {
+    flex-direction: column;
+  }
+
+  .closeddash-btn {
+    width: 100%;
+  }
 }

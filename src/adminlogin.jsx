@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAction } from "convex/react";
 import { api } from "../convex/_generated/api"; 
+import logo from './assets/logo.png';
 import './adminlogin.css';
 
 const AdminLogin = ({ onLogin }) => {
@@ -39,7 +40,7 @@ const AdminLogin = ({ onLogin }) => {
       <div className="login-card-container">
         <header className="login-header">
           <div className="logo-wrapper">
-            <img src="/logo.png" alt="Get Nailed Logo" className="login-logo" />
+            <img src={logo} alt="Get Nailed Logo" className="login-logo" />
           </div>
           <h1 className="login-brand">GET NAILED</h1>
           <p className="login-subtitle">by Trixie</p>

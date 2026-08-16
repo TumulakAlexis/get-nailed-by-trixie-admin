@@ -5,17 +5,19 @@ import {
   faCalendarXmark, 
   faReceipt, 
   faList,
-  faSignOutAlt // Added for Logout
+  faSignOutAlt 
 } from '@fortawesome/free-solid-svg-icons'; 
 import './sidebar.css';
 import Logo from '../assets/logo.png';
 
 const Sidebar = ({ activeTab, setActiveTab, onLogout }) => {
   return (
-    <div className="admin-sidebar">
+    <aside className="admin-sidebar" aria-label="Admin Navigation">
       <div className="sidebar-top-section">
         <div className="sidebar-logo-section">
-          <img src={Logo} alt="Logo" className="sidebar-logo" />
+          <div className="sidebar-logo-wrapper">
+            <img src={Logo} alt="Get Nailed Logo" className="sidebar-logo" />
+          </div>
         </div>
 
         <nav className="sidebar-nav">
@@ -23,6 +25,7 @@ const Sidebar = ({ activeTab, setActiveTab, onLogout }) => {
           <button 
             className={`nav-item ${activeTab === 'dashboard' ? 'active' : ''}`}
             onClick={() => setActiveTab('dashboard')}
+            title="Dashboard"
           >
             <FontAwesomeIcon icon={faChartSimple} className="nav-icon" />
             <span className="nav-text">Dashboard</span>
@@ -32,6 +35,7 @@ const Sidebar = ({ activeTab, setActiveTab, onLogout }) => {
           <button 
             className={`nav-item ${activeTab === 'transactions' ? 'active' : ''}`}
             onClick={() => setActiveTab('transactions')}
+            title="Transactions"
           >
             <FontAwesomeIcon icon={faReceipt} className="nav-icon" />
             <span className="nav-text">Transactions</span>
@@ -39,32 +43,34 @@ const Sidebar = ({ activeTab, setActiveTab, onLogout }) => {
 
           {/* SERVICES TAB */}
           <button 
-            className={`nav-item ${activeTab === 'services' ? 'active' : ''}`}
+            className={`nav-item ${activeTab === 'services-management' ? 'active' : ''}`}
             onClick={() => setActiveTab('services-management')}
+            title="Services Menu"
           >
             <FontAwesomeIcon icon={faList} className="nav-icon" />
-            <span className="nav-text">Services Menu</span>
+            <span className="nav-text">Services</span>
           </button>
 
           {/* CLOSED DAYS TAB */}
           <button 
             className={`nav-item ${activeTab === 'closed-days' ? 'active' : ''}`}
             onClick={() => setActiveTab('closed-days')}
+            title="Set Closed Day"
           >
             <FontAwesomeIcon icon={faCalendarXmark} className="nav-icon" />
-            <span className="nav-text">Set Closed Day</span>
+            <span className="nav-text">Closed Days</span>
           </button>
         </nav>
       </div>
 
       {/* LOGOUT SECTION (Pinned to bottom) */}
       <div className="sidebar-footer">
-        <button className="nav-item logout-btn" onClick={onLogout}>
+        <button className="nav-item logout-btn" onClick={onLogout} title="Logout">
           <FontAwesomeIcon icon={faSignOutAlt} className="nav-icon" />
           <span className="nav-text">Logout</span>
         </button>
       </div>
-    </div>
+    </aside>
   );
 };
 

@@ -23,18 +23,30 @@ const TransactionsPage = () => {
     window.print();
   };
 
+  // --- CORPORATE FINANCIAL METRICS COMPUTATION ---
   const stats = useMemo(() => {
     const totalRev = transactions.reduce((acc, t) => acc + (Number(t.totalFee) || 0), 0);
     const totalExp = expenses.reduce((acc, e) => acc + (Number(e.amount) || 0), 0);
+    const netInc = totalRev - totalExp;
+    const profitMargin = totalRev > 0 ? ((netInc / totalRev) * 100).toFixed(1) : 0;
+    
     const todayRev = transactions
       .filter(t => t.date === todayStr)
       .reduce((acc, t) => acc + (Number(t.totalFee) || 0), 0);
 
+    // Group expenses by category for corporate insights
+    const expensesByCategory = expenses.reduce((acc, e) => {
+      acc[e.category] = (acc[e.category] || 0) + Number(e.amount);
+      return acc;
+    }, {});
+
     return {
       totalRevenue: totalRev,
       totalExpenses: totalExp,
-      netIncome: totalRev - totalExp,
+      netIncome: netInc,
+      profitMargin: Number(profitMargin),
       todayRevenue: todayRev,
+      expensesByCategory,
     };
   }, [transactions, expenses, todayStr]);
 
@@ -58,36 +70,60 @@ const TransactionsPage = () => {
   );
 
   return (
-    <div className="transactions-container">
-      {/* Top Header Cards */}
-      <div className="print-header-only" style={{ display: 'none' }}>
-        <h1>Salon Transaction Report</h1>
-        <p>Report Generated: {format(new Date(), 'PPPP p')}</p>
+    <div className="transdash-container">
+      {/* Print-Only Executive Header */}
+      <div className="transdash-print-header" style={{ display: 'none' }}>
+        <h1>Corporate Executive Financial Report</h1>
+        <p>Generated on: {format(new Date(), 'PPPP p')}</p>
         <hr />
       </div>
-      <div className="trans-header">
-        <div className="summary-card dark">
-          <span>Net Profit</span>
-          <h1>₱{stats.netIncome.toLocaleString()}</h1>
+
+      {/* Top Executive KPI Grid */}
+      <div className="transdash-kpi-grid">
+        <div className="transdash-kpi-card transdash-dark">
+          <div className="transdash-kpi-header-row">
+            <span>Net Profit (YTD)</span>
+            <span className="transdash-badge">Active</span>
+          </div>
+          <h2>₱{stats.netIncome.toLocaleString()}</h2>
+          <p className="transdash-kpi-sub">Margin: {stats.profitMargin}%</p>
         </div>
-        <div className="summary-card light">
+
+        <div className="transdash-kpi-card">
+          <span>Gross Revenue</span>
+          <h2>₱{stats.totalRevenue.toLocaleString()}</h2>
+          <p className="transdash-kpi-sub positive">Lifetime collections</p>
+        </div>
+
+        <div className="transdash-kpi-card">
+          <span>Operating Expenses</span>
+          <h2>₱{stats.totalExpenses.toLocaleString()}</h2>
+          <p className="transdash-kpi-sub negative">Total overhead</p>
+        </div>
+
+        <div className="transdash-kpi-card">
           <span>Today's Revenue</span>
-          <h1>₱{stats.todayRevenue.toLocaleString()}</h1>
+          <h2>₱{stats.todayRevenue.toLocaleString()}</h2>
+          <p className="transdash-kpi-sub">Real-time daily flow</p>
         </div>
       </div>
 
-      <div className="trans-content-vertical">
-        {/* TOP SECTION: LOGGING & TRANSACTIONS */}
-        <div className="main-log-section">
-          <div className="expense-form-container">
-            <h3>Log New Expense</h3>
-            <form onSubmit={handleAddExpense} className="expense-form">
+      {/* Main Corporate Workspace Grid */}
+      <div className="transdash-workspace">
+        
+        {/* LEFT COLUMN: Transaction Ledger & Expense Form */}
+        <div className="transdash-column">
+          
+          {/* Expense Logger Module */}
+          <div className="transdash-panel">
+            <h3>Log Operational Expense</h3>
+            <form onSubmit={handleAddExpense} className="transdash-expense-form">
               <input
-                type="text" placeholder="Item/Description"
+                type="text" placeholder="Expense description..."
                 value={expDesc} onChange={(e) => setExpDesc(e.target.value)} required
               />
               <input
-                type="number" placeholder="Amount"
+                type="number" placeholder="Amount (₱)"
                 value={expAmount} onChange={(e) => setExpAmount(e.target.value)} required
               />
               <select value={expCat} onChange={(e) => setExpCat(e.target.value)}>
@@ -96,66 +132,90 @@ const TransactionsPage = () => {
                 <option value="Utilities">Utilities</option>
                 <option value="Other">Other</option>
               </select>
-              <button type="submit">Add to Expenses</button>
+              <button type="submit">Record Expense</button>
             </form>
           </div>
 
-          <div className="log-header">
-            <h2>Transaction Log</h2>
-            <input
-              type="text" placeholder="Search customer..."
-              value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
-              className="trans-search"
-            />
-          </div>
+          {/* Transaction Ledger */}
+          <div className="transdash-panel">
+            <div className="transdash-panel-header">
+              <h3>Transaction Ledger</h3>
+              <input
+                type="text" placeholder="Filter customer..."
+                value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
+                className="transdash-search"
+              />
+            </div>
 
-          <div className="trans-list">
-            {filteredTransactions.map((t) => (
-              <div key={t._id} className="trans-item">
-                <div className="trans-details">
-                  {/* FIXED: Extracting service names from objects to avoid [object Object] */}
-                  <h3>{t.services?.map(s => typeof s === 'object' ? s.name : s).join(", ")}</h3>
-                  <p>{t.name} • {t.date || "No Date"}</p>
-                </div>
-                <div className="trans-actions-right">
-                  <span className="trans-amount positive">
-                    + ₱{(Number(t.totalFee) || 0).toLocaleString()}
-                  </span>
-                  <button className="delete-btn-small" onClick={() => deleteTransaction({ id: t._id })}>×</button>
-                </div>
-              </div>
-            ))}
+            <div className="transdash-list">
+              {filteredTransactions.length === 0 ? (
+                <p className="transdash-empty-text">No transactions found.</p>
+              ) : (
+                filteredTransactions.map((t) => (
+                  <div key={t._id} className="transdash-item">
+                    <div className="transdash-details">
+                      <h4>{t.services?.map(s => typeof s === 'object' ? s.name : s).join(", ")}</h4>
+                      <p>{t.name} &bull; {t.date || "No Date"}</p>
+                    </div>
+                    <div className="transdash-actions">
+                      <span className="transdash-amount">
+                        + ₱{(Number(t.totalFee) || 0).toLocaleString()}
+                      </span>
+                      <button className="transdash-del-btn" onClick={() => deleteTransaction({ id: t._id })}>×</button>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
           </div>
         </div>
 
-        {/* BOTTOM SECTION: INCOME STATEMENT */}
-        <div className="bottom-report-section printable-report">
-          <div className="report-card full-width">
-            <h2>Income Statement</h2>
+        {/* RIGHT COLUMN: Corporate Income Statement & Analytical Breakdown */}
+        <div className="transdash-column printable-report">
+          <div className="transdash-panel corporate-statement">
+            <div className="statement-header-row">
+              <h3>Income Statement & Breakdown</h3>
+              <button onClick={handlePrint} className="transdash-print-btn">Print Report</button>
+            </div>
 
-            <div className="report-grid">
-              {/* Revenue Column */}
-              <div className="report-col">
-                <div className="report-row header">
-                  <span>Total Revenue</span>
-                  <span className="val-pos">₱{stats.totalRevenue.toLocaleString()}</span>
-                </div>
-                <p className="sub-text">Total earnings from all completed bookings.</p>
+            <div className="transdash-statement-grid">
+              {/* Revenue Line */}
+              <div className="statement-row header-row">
+                <span>Total Gross Revenue</span>
+                <span className="val-pos">₱{stats.totalRevenue.toLocaleString()}</span>
               </div>
+              <p className="statement-sub">Consolidated income from all service bookings.</p>
 
-              {/* Expenses Column */}
-              <div className="report-col">
-                <div className="report-row header">
-                  <span>Operating Expenses</span>
-                  <span className="val-neg">- ₱{stats.totalExpenses.toLocaleString()}</span>
-                </div>
-                <div className="expense-breakdown">
+              <div className="transdash-divider"></div>
+
+              {/* Expense Line & Categorized Overhead */}
+              <div className="statement-row header-row">
+                <span>Operating Overhead</span>
+                <span className="val-neg">- ₱{stats.totalExpenses.toLocaleString()}</span>
+              </div>
+              
+              <div className="transdash-expense-breakdown">
+                {Object.keys(stats.expensesByCategory).length === 0 ? (
+                  <p className="transdash-empty-text">No expenses recorded.</p>
+                ) : (
+                  Object.entries(stats.expensesByCategory).map(([cat, amt]) => (
+                    <div key={cat} className="transdash-cat-row">
+                      <span className="cat-name">{cat}</span>
+                      <span className="cat-amt">₱{amt.toLocaleString()}</span>
+                    </div>
+                  ))
+                )}
+
+                <div className="transdash-expense-list-scroll">
                   {expenses.map((e) => (
-                    <div key={e._id} className="expense-line-item">
-                      <span className="exp-desc">{e.description} ({e.category})</span>
-                      <div className="exp-val-group">
-                        <span className="exp-amt">₱{e.amount.toLocaleString()}</span>
-                        <button className="del-exp" onClick={() => deleteExpense({ id: e._id })}>×</button>
+                    <div key={e._id} className="transdash-expense-item">
+                      <div>
+                        <span className="exp-title">{e.description}</span>
+                        <span className="exp-category-tag">{e.category}</span>
+                      </div>
+                      <div className="exp-right">
+                        <span>₱{e.amount.toLocaleString()}</span>
+                        <button className="transdash-del-exp" onClick={() => deleteExpense({ id: e._id })}>×</button>
                       </div>
                     </div>
                   ))}
@@ -163,34 +223,19 @@ const TransactionsPage = () => {
               </div>
             </div>
 
-            <div className="report-divider"></div>
+            <div className="transdash-divider"></div>
 
-            <div className="report-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div className="report-row total" style={{ flex: 1 }}>
-                <span>NET PROFIT</span>
-                <span className="val-highlight">₱{stats.netIncome.toLocaleString()}</span>
+            {/* Bottom Net Summary */}
+            <div className="transdash-net-box">
+              <div>
+                <span className="net-label">NET CORPORATE PROFIT</span>
+                <p className="net-sub">Operating Margin: {stats.profitMargin}%</p>
               </div>
-
-              {/* SMALLER PRINT BUTTON AT THE BOTTOM */}
-              <button
-                onClick={handlePrint}
-                className="delete-btn-small"
-                style={{
-                  width: 'auto',
-                  padding: '5px 12px',
-                  fontSize: '11px',
-                  marginLeft: '20px',
-                  borderRadius: '4px',
-                  backgroundColor: '#f4f4f4',
-                  color: '#666',
-                  border: '1px solid #ddd'
-                }}
-              >
-                Print Statement
-              </button>
+              <span className="net-value">₱{stats.netIncome.toLocaleString()}</span>
             </div>
           </div>
         </div>
+
       </div>
     </div>
   );

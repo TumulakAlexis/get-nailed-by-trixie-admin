@@ -1,76 +1,118 @@
+:root {
+  --sidebar-bg: #2D3A3A;
+  --sidebar-nav-color: #C8D6C6; /* Brighter, high-contrast sage to ensure inactive tabs are clearly visible */
+  --sidebar-nav-hover: #ffffff;
+  --sidebar-active-bg: #ffffff;
+  --sidebar-active-text: #2D3A3A;
+  --sidebar-transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 .admin-sidebar {
-  width: 100px; /* As requested */
+  width: 100px;
   height: 100vh;
-  background-color: #2E403D;
-  padding: 20px 10px;
+  background-color: var(--sidebar-bg);
+  padding: 24px 8px;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   position: fixed;
   left: 0;
   top: 0;
   z-index: 100;
+  box-sizing: border-box;
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.08);
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sidebar-top-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
 .sidebar-logo-section {
-  text-align: center;
-  margin-bottom: 30px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 32px;
+  width: 100%;
+}
+
+.sidebar-logo-wrapper {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffffff 60%, #eaf2ed 100%);
+  padding: 3px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15),
+              0 0 0 2px rgba(200, 214, 198, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
 .sidebar-logo {
-  width: 100px;
-  height: 100px;
-  margin-bottom: 8px;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-}
-
-.sidebar-brand {
-  font-size: 0.6rem;
-  font-weight: 700;
-  color: #899D87;
-  margin: 0;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-}
-
-.sidebar-author {
-  font-size: 0.5rem;
-  color: #899D87;
+  border-radius: 50%;
 }
 
 .sidebar-nav {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 12px;
   align-items: center;
+  width: 100%;
 }
 
 .nav-item {
-  display: flex;/* Stack icon and text for narrow width */
-  align-items:start;
-  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  width: 80px;
-  height: 40px;
-  padding: 10px;
-  border-radius: 12px;
+  gap: 6px;
+  width: 100%;
+  height: 68px;
+  padding: 8px 2px;
+  border-radius: 16px;
   border: none;
   background: transparent;
-  color:#899D87 !important ;
+  color: var(--sidebar-nav-color);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: var(--sidebar-transition);
+  text-decoration: none;
+  box-sizing: border-box;
 }
 
+.nav-item:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: var(--sidebar-nav-hover);
+  transform: translateY(-1px);
+}
+
+/* Explicitly force dark text and icons on the active state for contrast against the white background */
 .nav-item.active {
-  background-color: #ffffff; /* White active background */
-  /* Text/Icon color switches to Dark Slate for contrast */
-  color: #2E403D !important; 
-  background-color: #ffffff !important;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  background-color: var(--sidebar-active-bg) !important;
+  color: var(--sidebar-active-text) !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  font-weight: 700;
+}
+
+.nav-item.active .nav-icon,
+.nav-item.active .nav-text {
+  color: var(--sidebar-active-text) !important;
 }
 
 .nav-icon {
-  font-size: 1.2rem;
-  margin-bottom: 5px;
+  font-size: 1.15rem;
+  color: var(--sidebar-nav-color);
+  transition: var(--sidebar-transition);
+}
+
+.nav-item:hover .nav-icon {
+  color: var(--sidebar-nav-hover);
 }
 
 .nav-text {
@@ -78,11 +120,73 @@
   font-weight: 700;
   text-align: center;
   text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--sidebar-nav-color);
 }
 
-/* CONTENT ADAPTATION */
-/* Make sure your main content knows the sidebar is now 100px */
+.nav-item:hover .nav-text {
+  color: var(--sidebar-nav-hover);
+}
+
+.sidebar-footer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 16px;
+}
+
+.logout-btn:hover {
+  background-color: rgba(217, 4, 41, 0.15);
+  color: #ff6b6b !important;
+}
+
+.logout-btn:hover .nav-icon,
+.logout-btn:hover .nav-text {
+  color: #ff6b6b !important;
+}
+
+/* IPAD & TABLET RESPONSIVE ADAPTATIONS */
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  .admin-sidebar {
+    width: 92px;
+    padding: 20px 6px;
+  }
+
+  .sidebar-logo-wrapper {
+    width: 58px;
+    height: 58px;
+  }
+
+  .nav-item {
+    height: 64px;
+    padding: 6px 2px;
+  }
+
+  .nav-icon {
+    font-size: 1.1rem;
+  }
+
+  .nav-text {
+    font-size: 0.5rem;
+  }
+}
+
+/* CONTENT ADAPTATION REFERENCE */
 .admin-content {
   margin-left: 100px;
   width: calc(100% - 100px);
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  .admin-content {
+    margin-left: 92px;
+    width: calc(100% - 92px);
+  }
 }
