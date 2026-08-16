@@ -15,18 +15,18 @@ export default defineSchema({
   }).index("by_date", ["date", "slot"]),
 
   transactions: defineTable({
-    bookingId: v.id("bookings"), // <--- ADDED: The link to the booking
+    bookingId: v.id("bookings"), // <--- The link to the booking
     name: v.string(),
     phone: v.string(),
     services: v.array(v.object({ 
-    name: v.string(), 
-    price: v.number() 
-  })),
+      name: v.string(), 
+      price: v.number() 
+    })),
     additionalFee: v.number(),
     totalFee: v.number(),
     date: v.optional(v.string()), 
     createdAt: v.number(),
-  }).index("by_bookingId", ["bookingId"]), // <--- ADDED: The missing index
+  }).index("by_bookingId", ["bookingId"]),
 
   expenses: defineTable({
     description: v.string(),
@@ -36,16 +36,17 @@ export default defineSchema({
     createdAt: v.number(),
   }),
 
-  // Add this to your schema.ts
-services: defineTable({
-  name: v.string(),
-  description: v.string(),
-  price: v.number(),
-  imageStorageId: v.optional(v.id("_storage")), // For the service photo
-}),
-
-adminConfig: defineTable({
-    passwordHash: v.string(),
+  services: defineTable({
+    name: v.string(),
+    description: v.string(),
+    price: v.number(),
+    imageStorageId: v.optional(v.id("_storage")), // For the service photo
   }),
-  
+
+  adminConfig: defineTable({
+    passwordHash: v.string(),
+    email: v.optional(v.string()),
+    otp: v.optional(v.string()),
+    otpExpires: v.optional(v.number()),
+  }),
 });

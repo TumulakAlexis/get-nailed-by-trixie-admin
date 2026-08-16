@@ -10,6 +10,7 @@
 
 import type * as admin from "../admin.js";
 import type * as bookings from "../bookings.js";
+import type * as login from "../login.js";
 import type * as services from "../services.js";
 
 import type {
@@ -21,6 +22,7 @@ import type {
 declare const fullApi: ApiFromModules<{
   admin: typeof admin;
   bookings: typeof bookings;
+  login: typeof login;
   services: typeof services;
 }>;
 
