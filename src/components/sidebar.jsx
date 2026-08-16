@@ -5,6 +5,7 @@ import {
   faCalendarXmark, 
   faReceipt, 
   faList,
+  faStar,
   faSignOutAlt 
 } from '@fortawesome/free-solid-svg-icons'; 
 import './sidebar.css';
@@ -49,6 +50,16 @@ const Sidebar = ({ activeTab, setActiveTab, onLogout }) => {
           >
             <FontAwesomeIcon icon={faList} className="nav-icon" />
             <span className="nav-text">Services</span>
+          </button>
+
+          {/* REVIEWS TAB */}
+          <button 
+            className={`nav-item ${activeTab === 'reviews-management' ? 'active' : ''}`}
+            onClick={() => setActiveTab('reviews-management')}
+            title="Manage Reviews"
+          >
+            <FontAwesomeIcon icon={faStar} className="nav-icon" />
+            <span className="nav-text">Reviews</span>
           </button>
 
           {/* CLOSED DAYS TAB */}

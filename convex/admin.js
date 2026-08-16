@@ -266,4 +266,77 @@ export const seedAdmin = mutation({
     }
     return "Database updated. Use password: admin123";
   },
+  
+});
+
+/**
+ * REVIEWS: Get all reviews along with analytics (average rating, distribution)
+ */
+export const getReviewsWithAnalytics = query({
+  handler: async (ctx) => {
+    const reviews = await ctx.db.query("reviews").order("desc").collect();
+    
+    const totalReviews = reviews.length;
+    
+    if (totalReviews === 0) {
+      return {
+        reviews: [],
+        averageRating: 0,
+        totalReviews: 0,
+        distribution: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 }
+      };
+    }
+
+    let sum = 0;
+    const distribution = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+
+    for (const review of reviews) {
+      sum += review.rating;
+      const roundedRating = Math.round(review.rating);
+      if (distribution[roundedRating] !== undefined) {
+        distribution[roundedRating]++;
+      }
+    }
+
+    const averageRating = (sum / totalReviews).toFixed(1);
+
+    // Resolve storage URLs for reviews that have images
+    const reviewsWithImages = await Promise.all(
+      reviews.map(async (review) => {
+        let imageUrl = null;
+        if (review.imageStorageId) {
+          imageUrl = await ctx.storage.getUrl(review.imageStorageId);
+        }
+        return {
+          ...review,
+          imageUrl,
+        };
+      })
+    );
+
+    return {
+      reviews: reviewsWithImages,
+      averageRating: Number(averageRating),
+      totalReviews,
+      distribution,
+    };
+  },
+});
+
+export const deleteReview = mutation({
+  args: { id: v.id("reviews") },
+  handler: async (ctx, args) => {
+    const review = await ctx.db.get(args.id);
+    if (!review) {
+      throw new Error("Review not found");
+    }
+
+    // Delete associated image from Convex storage if it exists
+    if (review.imageStorageId) {
+      await ctx.storage.delete(review.imageStorageId);
+    }
+
+    // Delete the review document
+    await ctx.db.delete(args.id);
+  },
 });
