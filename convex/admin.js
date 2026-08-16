@@ -18,13 +18,10 @@ export const login = action({
         return false;
       }
 
-      // We use 'await' here because bcryptjs 3.0+ returns a Promise
       const isMatch = await bcrypt.compare(args.password, admin.passwordHash);
-      
       console.log("Password match result:", isMatch);
       return isMatch;
     } catch (error) {
-      // If bcryptjs crashes, we'll see why in the Convex Logs
       console.error("Bcrypt Error:", error.message);
       return false;
     }
@@ -71,7 +68,7 @@ export const saveAdminPassword = mutation({
 export const updateBookingStatus = mutation({
   args: { 
     id: v.id("bookings"), 
-    status: v.string() // "completed" or "canceled"
+    status: v.string() 
   },
   handler: async (ctx, args) => {
     await ctx.db.patch(args.id, { status: args.status });
@@ -99,7 +96,7 @@ export const manualOccupy = mutation({
 });
 
 /**
- * STATS ENGINE: Fixed to match your Schema
+ * STATS ENGINE
  */
 export const getStats = query({
   handler: async (ctx) => {
@@ -255,9 +252,7 @@ export const logout = mutation({
 export const seedAdmin = mutation({
   args: {},
   handler: async (ctx) => {
-    // We use a real hash for the password: admin123
     const passwordHash = "$2a$10$6p3m5X8j5.f0Q.eZ6q8OueC1V9vH9S.7m4N8r6p9X0z3v4b5c6d7e";
-    
     const existing = await ctx.db.query("adminConfig").first();
     if (existing) {
       await ctx.db.patch(existing._id, { passwordHash });
@@ -266,16 +261,14 @@ export const seedAdmin = mutation({
     }
     return "Database updated. Use password: admin123";
   },
-  
 });
 
 /**
- * REVIEWS: Get all reviews along with analytics (average rating, distribution)
+ * REVIEWS: Get all reviews along with analytics
  */
 export const getReviewsWithAnalytics = query({
   handler: async (ctx) => {
     const reviews = await ctx.db.query("reviews").order("desc").collect();
-    
     const totalReviews = reviews.length;
     
     if (totalReviews === 0) {
@@ -300,7 +293,6 @@ export const getReviewsWithAnalytics = query({
 
     const averageRating = (sum / totalReviews).toFixed(1);
 
-    // Resolve storage URLs for reviews that have images
     const reviewsWithImages = await Promise.all(
       reviews.map(async (review) => {
         let imageUrl = null;
@@ -331,12 +323,10 @@ export const deleteReview = mutation({
       throw new Error("Review not found");
     }
 
-    // Delete associated image from Convex storage if it exists
     if (review.imageStorageId) {
       await ctx.storage.delete(review.imageStorageId);
     }
 
-    // Delete the review document
     await ctx.db.delete(args.id);
   },
 });
