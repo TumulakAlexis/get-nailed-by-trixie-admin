@@ -23,9 +23,13 @@
   padding: 36px 40px;
   box-sizing: border-box;
   -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centers children horizontally on desktop */
 }
 
 .admin-dashboard-content-inner {
+  width: 100%;
   max-width: 1100px;
   margin: 0 auto;
   display: flex;
@@ -97,6 +101,7 @@
     margin-left: 92px; /* Matches iPad sidebar width */
     width: calc(100% - 92px);
     padding: 28px 24px;
+    align-items: stretch; /* Resets desktop centering so tablet layout remains natural */
   }
 
   .admin-dashboard-content-inner {
@@ -115,5 +120,6 @@
     margin-left: 80px;
     width: calc(100% - 80px);
     padding: 20px 16px;
+    align-items: stretch; /* Resets desktop centering */
   }
 }

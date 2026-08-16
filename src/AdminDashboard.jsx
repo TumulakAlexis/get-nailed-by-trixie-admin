@@ -77,7 +77,7 @@ const AdminDashboard = ({ onLogout }) => {
       />
 
       <main className="admin-dashboard-content">
-        <div className="admin-dashboard-content-inner">
+        <div className="admin-dashboard-content-inner" style={{ paddingBottom: '10rem' }}>
           {renderContent()}
         </div>
       </main>
