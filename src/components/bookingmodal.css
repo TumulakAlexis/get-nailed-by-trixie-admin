@@ -1,28 +1,197 @@
-/* Darken the background behind the modal */
+/* --- BASE MODAL OVERLAY --- */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.45);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  overflow-y: auto;
+  padding: 20px;
 }
 
-/* List View Modal */
+/* --- DETAIL CARD VIEW --- */
+.detail-card {
+  background: white;
+  padding: 30px 40px 40px 40px;
+  border-radius: 35px;
+  width: 480px;
+  max-width: 95vw;
+  max-height: 85vh;
+  overflow-y: auto;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  position: relative;
+  margin: auto;
+}
+
+.detail-card.no-scroll {
+  overflow-y: auto;
+  max-height: 85vh;
+}
+
+.detail-name {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #2D3A3A;
+  margin-bottom: 8px;
+}
+
+/* --- DETAIL INFO GRID --- */
+.detail-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  text-align: left;
+  margin: 20px 0;
+}
+
+.info-item span {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #8BA08E;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.info-item p {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2D3A3A;
+  margin: 0;
+}
+
+.full-width {
+  grid-column: span 2;
+}
+
+/* --- CLIENT SERVICES TAGS (PILLS) --- */
+.client-services-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.service-tag {
+  display: inline-block;
+  background: #f8f9fa;
+  border: 1px solid #e2e8f0;
+  color: #2D3A3A;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* --- STATUS BADGES --- */
+.status-badge {
+  text-transform: capitalize;
+  font-weight: bold;
+}
+.status-badge.completed { color: #48C78E; }
+.status-badge.pending { color: #f39c12; }
+.status-badge.canceled { color: #e74c3c; }
+
+/* --- REFERENCE IMAGE SECTION --- */
+.detail-image-section {
+  width: calc(100% + 80px);
+  margin: -30px -40px 20px -40px;
+  height: 220px;
+  background: #f0f0f0;
+  border-radius: 35px 35px 0 0;
+  overflow: hidden;
+  border-bottom: 1px solid #ddd;
+}
+
+.detail-image-section.clickable {
+  cursor: zoom-in;
+  transition: opacity 0.2s;
+}
+.detail-image-section.clickable:hover {
+  opacity: 0.9;
+}
+
+.booking-reference-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.image-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #888;
+  font-size: 0.9rem;
+}
+
+/* --- IMAGE EXPAND OVERLAY --- */
+.image-expand-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  cursor: zoom-out;
+}
+
+.expanded-photo {
+  max-width: 90vw;
+  max-height: 90vh;
+  border-radius: 10px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+  object-fit: contain;
+}
+
+/* --- ACTION BUTTONS --- */
+.detail-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+  justify-content: center;
+  position: sticky;
+  bottom: 0;
+  background: white;
+  padding-top: 10px;
+}
+
+.btn-cancel-res, .btn-done-res {
+  flex: 1;
+  border: none;
+  padding: 14px 0;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+}
+
+.btn-cancel-res { background: #EB5757; }
+.btn-done-res { background: #6FCF97; }
+
+/* --- LIST VIEW MODAL --- */
 .slot-modal {
   background: white;
-  padding: 45px;
+  padding: 40px;
   border-radius: 35px;
   width: 440px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+  max-width: 95vw;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  margin: auto;
 }
 
 .modal-date-title {
-  font-size: 2.8rem;
+  font-size: 2.4rem;
   font-weight: 800;
   color: #2D3A3A;
-  margin-bottom: 30px;
+  margin-bottom: 24px;
   letter-spacing: -1px;
 }
 
@@ -35,123 +204,22 @@
 .slot-time {
   font-weight: 800;
   width: 110px;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: #2D3A3A;
 }
 
-.vacant-text { color: #6FCF97; font-weight: 700; font-size: 1.2rem; }
-.booked-text { color: #EB5757; font-weight: 700; font-size: 1.2rem; }
+.vacant-text { color: #6FCF97; font-weight: 700; font-size: 1.1rem; }
+.booked-text { color: #EB5757; font-weight: 700; font-size: 1.1rem; }
 
 .view-slot-btn {
   margin-left: auto;
   background: #2D3A3A;
   color: white;
   border: none;
-  padding: 6px 18px;
+  padding: 6px 16px;
   border-radius: 20px;
   font-weight: 600;
   cursor: pointer;
-}
-
-/* Detail Card View */
-.detail-card {
-  background: white;
-  padding: 60px 40px;
-  border-radius: 35px;
-  width: 480px;
-  text-align: center;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-}
-
-.detail-name {
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: #2D3A3A;
-  margin-bottom: 8px;
-}
-
-.detail-text {
-  font-size: 1.4rem;
-  color: #2D3A3A;
-  margin: 4px 0;
-}
-
-.detail-actions {
-  display: flex;
-  gap: 15px;
-  margin-top: 40px;
-  justify-content: center;
-}
-
-.btn-cancel-res, .btn-done-res {
-  flex: 1;
-  border: none;
-  padding: 16px 0;
-  border-radius: 30px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: white;
-  cursor: pointer;
-}
-
-.btn-cancel-res { background: #EB5757; }
-.btn-done-res { background: #6FCF97; }
-
-/* Additional Detail View Styles */
-.detail-info-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  text-align: left;
-  margin: 30px 0;
-}
-
-.info-item span {
-  font-size: 0.8rem;
-  font-weight: 800;
-  color: #8BA08E;
-  text-transform: uppercase;
-  display: block;
-  margin-bottom: 2px;
-}
-
-.info-item p {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #2D3A3A;
-  margin: 0;
-}
-
-.full-width {
-  grid-column: span 2;
-}
-
-.status-pending {
-  color: #f2994a !important;
-}
-
-.detail-image-section {
-  text-align: left;
-  margin-top: 25px;
-  width: 100%;
-}
-
-.detail-image-section span {
-  font-size: 0.8rem;
-  font-weight: 800;
-  color: #8BA08E;
-  text-transform: uppercase;
-  margin-bottom: 8px;
-  display: block;
-}
-
-.reference-img {
-  width: 100%;
-  max-height: 280px;
-  object-fit: cover;
-  border-radius: 20px;
-  border: 1px solid #eee;
-  display: block;
 }
 
 .block-btn {
@@ -159,79 +227,35 @@
   color: #4b5563 !important;
 }
 
-/* Update the Detail Card to handle overflow */
-.detail-card {
-  background: white;
-  padding: 30px 40px 40px 40px; /* Reduced top padding from 60px to 30px */
-  border-radius: 35px;
-  width: 480px;
-  max-height: 90vh; /* Limits height to 90% of the screen height */
-  overflow-y: auto; /* Adds scrollbar if content is too tall */
-  text-align: center;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-  position: relative;
-}
-
-/* Reduce image height slightly to save space */
-.reference-img {
-  width: 100%;
-  max-height: 200px; /* Reduced from 280px to 200px */
-  object-fit: cover;
-  border-radius: 20px;
-  border: 1px solid #eee;
-  display: block;
-}
-
-/* Ensure the grid doesn't take up too much vertical space */
-.detail-info-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px; /* Reduced gap from 20px to 15px */
-  text-align: left;
-  margin: 20px 0; /* Reduced margin from 30px to 20px */
-}
-
-/* Optional: Add a sticky footer for buttons so they are always visible */
-.detail-actions {
-  display: flex;
-  gap: 15px;
-  margin-top: 30px;
-  justify-content: center;
-  position: sticky;
-  bottom: 0;
-  background: white;
-  padding-top: 10px;
-}
-
-/* Compact, No-Scroll Modern Payment Card */
+/* --- PAYMENT & CHECKOUT MODAL --- */
 .payment-card {
   width: 440px; 
   background: #ffffff;
-  border-radius: 20px;
-  padding: 20px; 
+  border-radius: 25px;
+  padding: 25px; 
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .payment-subtitle {
   color: #666;
-  font-size: 0.8rem;
-  margin-bottom: 12px;
+  font-size: 0.85rem;
+  margin-bottom: 15px;
   font-weight: 500;
+  text-align: left;
 }
 
-/* Two-column grid to save vertical space */
 .services-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* Split into two columns */
+  grid-template-columns: 1fr 1fr;
   gap: 8px;
   margin-bottom: 16px;
-  overflow: hidden; /* Ensures no scrollbars appear */
+  max-height: 260px;
+  overflow-y: auto;
 }
 
 .service-item {
   display: flex;
-  flex-direction: column; /* Stack name and price to save width */
+  flex-direction: column;
   justify-content: center;
   align-items: flex-start;
   padding: 10px 12px;
@@ -247,25 +271,24 @@
   border-color: #8BA08E;
 }
 
-.service-item span:first-child {
+.service-item-info {
+  display: flex;
+  align-items: center;
+}
+
+.service-item span {
   font-weight: 600;
   font-size: 0.8rem;
   line-height: 1.2;
+  color: #2D3A3A;
 }
 
-.service-item span:last-child {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: #8BA08E;
-  margin-top: 4px;
-}
-
-/* Tightened Input Section */
 .fee-input-section {
   background: #f8f9fa;
   padding: 10px 14px;
   border-radius: 12px;
   margin-bottom: 16px;
+  text-align: left;
 }
 
 .fee-input-section label {
@@ -274,6 +297,7 @@
   font-weight: 700;
   color: #999;
   margin-bottom: 2px;
+  text-transform: uppercase;
 }
 
 .fee-input-section input {
@@ -284,52 +308,100 @@
   font-size: 1rem;
   padding: 2px 0;
   outline: none;
+  color: #2D3A3A;
 }
 
-/* Compact Summary */
 .payment-summary {
   background: #2D3A3A;
   color: white;
   padding: 14px 18px;
   border-radius: 14px;
   margin-bottom: 16px;
+  text-align: left;
 }
 
 .summary-row {
   display: flex;
   justify-content: space-between;
   opacity: 0.8;
-  font-size: 0.8rem;
-  margin-bottom: 2px;
+  font-size: 0.85rem;
+  margin-bottom: 4px;
 }
 
 .total-row {
   opacity: 1;
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   font-weight: 800;
   margin-top: 6px;
   padding-top: 6px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Button height reduction */
-.btn-done-res, .btn-cancel-res {
-  padding: 10px;
-  font-size: 0.85rem;
+/* --- RECEIPT MODAL --- */
+.receipt-modal-card {
+  text-align: center;
+  width: 420px;
+}
+
+.success-icon-container {
+  display: flex;
+  justify-content: center;
+}
+
+.success-icon {
+  width: 60px;
+  height: 60px;
+  background: #8BA08E;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  margin-bottom: 15px;
+}
+
+.receipt-display-grid {
+  text-align: left;
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 15px;
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.r-display-item span {
+  font-size: 0.75rem;
+  color: #888;
+  font-weight: bold;
+  text-transform: uppercase;
+  display: block;
+}
+
+.r-display-item p {
+  font-size: 0.95rem;
+  color: #2D3A3A;
+  margin-top: 2px;
+  font-weight: 600;
+}
+
+.total-highlight p {
+  color: #8BA08E;
+  font-size: 1.2rem;
 }
 
 /* --- PRINT STYLES --- */
 #receipt-print-area {
-  display: none; /* Hidden on screen */
+  display: none;
 }
 
 @media print {
-  /* Hide everything on the page */
   body * {
     visibility: hidden;
   }
 
-  /* Show only the receipt content */
   #receipt-print-area, #receipt-print-area * {
     visibility: visible;
   }
@@ -338,7 +410,7 @@
     position: absolute;
     left: 0;
     top: 0;
-    width: 80mm; /* Standard receipt width */
+    width: 80mm;
     padding: 10px;
     background: white;
     color: black;
@@ -365,137 +437,78 @@
   }
 }
 
-.receipt-modal-card {
-  text-align: center;
-  width: 420px;
+/* --- IPAD & TABLET RESPONSIVE ADJUSTMENTS --- */
+@media screen and (max-width: 1024px) {
+  .modal-overlay {
+    padding: 12px;
+  }
+
+  .detail-card, 
+  .slot-modal, 
+  .payment-card, 
+  .receipt-modal-card {
+    width: 100% !important;
+    max-width: 460px !important;
+    max-height: 85vh !important;
+    padding: 20px 22px !important;
+  }
+
+  .detail-image-section {
+    width: calc(100% + 44px);
+    margin: -20px -22px 15px -22px;
+    height: 180px;
+  }
+
+  .detail-info-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12px !important;
+  }
+
+  .detail-actions {
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+  }
+
+  .detail-actions button {
+    flex: 1 1 calc(50% - 5px) !important;
+    padding: 12px 0 !important;
+  }
 }
 
-.success-icon {
-  width: 60px;
-  height: 60px;
-  background: #8BA08E;
-  color: white;
-  border-radius: 50%;
+/* Discount Section Toggle Styling */
+.discount-header-row {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  font-size: 30px;
-  margin: 0 auto 15px;
+  margin-bottom: 2px;
 }
 
-.receipt-display-grid {
-  text-align: left;
-  background: #f8f9fa;
-  padding: 20px;
-  border-radius: 15px;
-  margin: 20px 0;
+.discount-header-row label {
+  margin-bottom: 0 !important;
+}
+
+.discount-type-toggle {
   display: flex;
-  flex-direction: column;
-  gap: 12px;
+  background: #e2e8f0;
+  border-radius: 8px;
+  padding: 2px;
+  gap: 2px;
 }
 
-.r-display-item span {
+.disc-toggle-btn {
+  background: transparent;
+  border: none;
+  padding: 2px 8px;
   font-size: 0.75rem;
-  color: #888;
-  font-weight: bold;
-  text-transform: uppercase;
+  font-weight: 700;
+  color: #4a5568;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s ease;
 }
 
-.r-display-item p {
-  font-size: 0.95rem;
+.disc-toggle-btn.active {
+  background: #ffffff;
   color: #2D3A3A;
-  margin-top: 2px;
-  font-weight: 600;
-}
-
-.total-highlight p {
-  color: #8BA08E;
-  font-size: 1.2rem;
-}
-
-.detail-image-container {
-  width: 100%;
-  height: 200px;
-  border-radius: 12px;
-  overflow: hidden;
-  margin-bottom: 20px;
-  background-color: #f0f0f0;
-}
-
-.booking-reference-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Keeps aspect ratio while filling the box */
-  display: block;
-}
-
-.status-badge {
-  text-transform: capitalize;
-  font-weight: bold;
-}
-
-.status-badge.completed { color: #48C78E; }
-.status-badge.pending { color: #f39c12; }
-.status-badge.canceled { color: #e74c3c; }
-
-.detail-image-section {
-  width: calc(100% + 40px); /* Expand to edges of the card */
-  margin: -20px -20px 20px -20px; /* Pull it into the padding area */
-  height: 250px;
-  background: #f0f0f0;
-  border-radius: 20px 20px 0 0;
-  overflow: hidden;
-  border-bottom: 1px solid #ddd;
-}
-
-.booking-reference-photo {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* This makes the photo fill the space without stretching */
-  display: block;
-}
-
-.image-placeholder {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  color: #888;
-  font-size: 0.9rem;
-}
-
-/* Fix for No Scroll */
-.detail-card.no-scroll {
-  overflow-y: hidden; /* Removes the scrollbar */
-  max-height: none;   /* Allows card to wrap content naturally */
-  padding-bottom: 30px;
-}
-
-/* Clickable Image Style */
-.detail-image-section.clickable {
-  cursor: zoom-in;
-  transition: opacity 0.2s;
-}
-.detail-image-section.clickable:hover {
-  opacity: 0.9;
-}
-
-/* Expansion Overlay */
-.image-expand-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.9);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 2000;
-  cursor: zoom-out;
-}
-
-.expanded-photo {
-  max-width: 90vw;
-  max-height: 90vh;
-  border-radius: 10px;
-  box-shadow: 0 0 30px rgba(0,0,0,0.5);
-  object-fit: contain;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }

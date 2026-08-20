@@ -165,6 +165,13 @@ export const createTransaction = mutation({
       })
     ),
     additionalFee: v.number(),
+    discount: v.optional(
+      v.object({
+        type: v.string(), // "peso" or "percent"
+        value: v.number(),
+        amount: v.number(),
+      })
+    ),
     totalFee: v.number(),
     date: v.string(),
   },
@@ -175,6 +182,7 @@ export const createTransaction = mutation({
       phone: args.phone,
       services: args.services,
       additionalFee: args.additionalFee,
+      discount: args.discount,
       totalFee: args.totalFee,
       date: args.date,
       createdAt: Date.now(),

@@ -8,7 +8,8 @@ import BookingModal from './components/bookingmodal';
 import ClosedDay from './closedday';
 import TransactionsPage from './transactionspage'; 
 import ServicesPage from './servicespage'; 
-import AdminReviews from './adminreviews'; // Adjust the import path if located elsewhere
+import AdminReviews from './adminreviews';
+import AdminPromoManager from './adminpromomanager'; // Adjust the import path if located elsewhere
 import './admindashboard.css';
 
 const AdminDashboard = ({ onLogout }) => { 
@@ -57,6 +58,9 @@ const AdminDashboard = ({ onLogout }) => {
 
       case 'reviews-management':
         return <AdminReviews />;
+
+      case 'promo-manager':
+        return <AdminPromoManager />;
 
       default:
         return (

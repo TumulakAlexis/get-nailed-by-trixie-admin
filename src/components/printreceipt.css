@@ -1,104 +1,156 @@
-/* Hidden on your monitor */
-.print-only-receipt-wrapper {
-  display: none;
-  font-family: 'Courier New', Courier, monospace;
-  width: 80mm; 
-  padding: 20px; /* Increased base padding */
-  color: black;
-  background: white;
-}
-.r-line {
+.print-receipt-wrapper {
   display: flex;
-  justify-content: space-between; /* Pushes Label to left and Price to right */
-  font-size: 13px;
-  margin: 4px 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Centers vertically */
+  padding: 20px;
+  background: #f7fafc;
+  min-height: 100vh;
+  box-sizing: border-box;
 }
 
-.r-line {
+.receipt-action-toolbar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  justify-content: center; /* Centers the toolbar buttons */
+}
+
+.toolbar-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: opacity 0.2s;
+}
+
+.toolbar-btn:hover {
+  opacity: 0.9;
+}
+
+.print-btn { background: #4a5568; }
+.pdf-btn { background: #3182ce; }
+.img-btn { background: #38a169; }
+
+.receipt-card {
+  background: #ffffff;
+  width: 100%;
+  max-width: 400px;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  font-family: 'Inter', sans-serif;
+  color: #2D3A3A;
+  margin: 0 auto; /* Ensures horizontal centering if flex alignment shifts */
+}
+
+.receipt-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.receipt-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  letter-spacing: 1px;
+  color: #2D3A3A;
+}
+
+.receipt-header p {
+  margin: 4px 0 0;
+  font-size: 0.85rem;
+  color: #718096;
+}
+
+.receipt-date {
+  display: block;
+  font-size: 0.75rem;
+  color: #a0aec0;
+  margin-top: 6px;
+}
+
+.receipt-details {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.85rem;
+}
+
+.receipt-row {
   display: flex;
   justify-content: space-between;
-  width: 100%;
-  margin-bottom: 4px;
-}
-.service-item {
-  padding-left: 5px;
 }
 
-.additional-line {
-  margin-top: 8px;
-  font-style: italic;
+.receipt-divider {
+  height: 1px;
+  background: #e2e8f0;
+  margin: 15px 0;
 }
 
-/* --- PRINT RULES --- */
+.receipt-items-section h4 {
+  margin: 0 0 10px 0;
+  font-size: 0.9rem;
+  color: #4a5568;
+}
+
+.receipt-item-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+}
+
+.discount-row {
+  color: #e53e3e;
+  font-weight: 500;
+}
+
+.receipt-total-section {
+  margin-top: 10px;
+}
+
+.total-row {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.total-amount-val {
+  color: #38a169;
+}
+
+.receipt-footer {
+  text-align: center;
+  margin-top: 25px;
+  font-size: 0.85rem;
+  color: #4a5568;
+}
+
+.footer-sub {
+  font-size: 0.75rem;
+  color: #a0aec0;
+  margin-top: 4px;
+}
+
+/* Print Specific Rules */
 @media print {
-  /* 1. Hide the entire React App */
   body * {
     visibility: hidden;
   }
-
-  /* 2. Show only the receipt */
-  .print-only-receipt-wrapper, 
-  .print-only-receipt-wrapper * {
+  #printable-receipt, #printable-receipt * {
     visibility: visible;
   }
-
-  /* 3. Position the receipt */
-  .print-only-receipt-wrapper {
-    display: block !important;
+  #printable-receipt {
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
-    /* Use padding to ensure text doesn't hit the edge of the paper */
-    padding: 10mm; 
-    box-sizing: border-box;
+    box-shadow: none;
+    padding: 0;
   }
-
-  /* 4. Define Paper Margins */
-  @page {
-    /* This creates a buffer so the printer doesn't cut off text */
-    margin: 10mm; 
+  .receipt-action-toolbar {
+    display: none;
   }
-}
-
-/* Styling for the receipt look */
-.receipt-header { 
-  text-align: center; 
-  margin-bottom: 15px; 
-}
-.receipt-header h1 { font-size: 20px; margin: 0; text-transform: uppercase; }
-.receipt-header p { font-size: 13px; margin: 4px 0; }
-
-.receipt-divider { 
-  border-bottom: 1px dashed #000; 
-  margin: 15px 0; 
-}
-
-.r-line { 
-  display: flex; 
-  justify-content: space-between; 
-  font-size: 14px; 
-  margin: 6px 0; 
-}
-
-.total-line { 
-  border-top: 2px solid #000;
-  padding-top: 10px;
-  font-weight: bold; 
-  font-size: 18px; 
-  margin-top: 15px; 
-}
-
-.thank-you { 
-  text-align: center; 
-  margin-top: 30px; 
-  font-style: italic; 
-  font-size: 13px; 
-}
-
-/* This ensures the service name is on the left and price is on the right */
-.service-row {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
 }

@@ -1,19 +1,36 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { format } from 'date-fns';
 import './bookingmodal.css';
-// Ensure you create this component in a separate file
 import PrintReceipt from './printreceipt';
 
 const TIME_SLOTS = ["9:00 AM", "1:00 PM", "4:00 PM"];
 
 const PaymentModal = ({ booking, onConfirm, onCancel }) => {
-  // 1. Fetch dynamic services from your Convex database
   const servicesData = useQuery(api.services.getServices) || [];
 
-  const [selectedServices, setSelectedServices] = useState([]);
+  const [selectedServices, setSelectedServices] = useState(() => {
+    if (!booking?.services || !Array.isArray(booking.services)) return [];
+    return servicesData.filter(dbService => 
+      booking.services.some(bServ => (typeof bServ === 'object' ? bServ.name : bServ) === dbService.name)
+    );
+  });
+
   const [extraFee, setExtraFee] = useState("");
+  const [discountValue, setDiscountValue] = useState("");
+  const [discountType, setDiscountType] = useState("peso"); // 'peso' or 'percent'
+
+  useEffect(() => {
+    if (servicesData.length > 0 && booking?.services && selectedServices.length === 0) {
+      const matched = servicesData.filter(dbService => 
+        booking.services.some(bServ => (typeof bServ === 'object' ? bServ.name : bServ) === dbService.name)
+      );
+      if (matched.length > 0) {
+        setSelectedServices(matched);
+      }
+    }
+  }, [servicesData, booking]);
 
   const toggleService = (service) => {
     setSelectedServices(prev =>
@@ -23,19 +40,30 @@ const PaymentModal = ({ booking, onConfirm, onCancel }) => {
     );
   };
 
-  const total = useMemo(() => {
+  const { subtotal, discountAmount, total } = useMemo(() => {
     const serviceTotal = selectedServices.reduce((sum, s) => sum + s.price, 0);
-    return serviceTotal + (Number(extraFee) || 0);
-  }, [selectedServices, extraFee]);
+    const sub = serviceTotal + (Number(extraFee) || 0);
+    
+    let discAmt = 0;
+    const dVal = Number(discountValue) || 0;
+    if (dVal > 0) {
+      if (discountType === 'percent') {
+        discAmt = sub * (dVal / 100);
+      } else {
+        discAmt = dVal;
+      }
+    }
+    const finalTotal = Math.max(0, sub - discAmt);
+    return { subtotal: sub, discountAmount: discAmt, total: finalTotal };
+  }, [selectedServices, extraFee, discountValue, discountType]);
 
   return (
     <div className="modal-overlay">
       <div className="detail-card payment-card" onClick={(e) => e.stopPropagation()}>
         <h2 className="detail-name">Checkout: {booking.name}</h2>
-        <p className="payment-subtitle">Select services provided:</p>
+        <p className="payment-subtitle">Review or adjust services provided:</p>
 
-        {/* 2. Scrollable Services Grid using database data */}
-        <div className="services-grid" style={{ maxHeight: '300px', overflowY: 'auto' }}>
+        <div className="services-grid" style={{ maxHeight: '240px', overflowY: 'auto' }}>
           {servicesData.length > 0 ? (
             servicesData.map(s => (
               <div
@@ -65,14 +93,44 @@ const PaymentModal = ({ booking, onConfirm, onCancel }) => {
           />
         </div>
 
+        <div className="fee-input-section">
+          <div className="discount-header-row">
+            <label>Discount</label>
+            <div className="discount-type-toggle">
+              <button 
+                type="button" 
+                className={`disc-toggle-btn ${discountType === 'peso' ? 'active' : ''}`}
+                onClick={() => setDiscountType('peso')}
+              >₱</button>
+              <button 
+                type="button" 
+                className={`disc-toggle-btn ${discountType === 'percent' ? 'active' : ''}`}
+                onClick={() => setDiscountType('percent')}
+              >%</button>
+            </div>
+          </div>
+          <input
+            type="number"
+            value={discountValue}
+            onChange={(e) => setDiscountValue(e.target.value)}
+            placeholder={discountType === 'peso' ? "e.g. 100 off" : "e.g. 10% off"}
+          />
+        </div>
+
         <div className="payment-summary">
           <div className="summary-row">
             <span>Subtotal:</span>
-            <span>₱{(total - (Number(extraFee) || 0)).toLocaleString()}</span>
+            <span>₱{subtotal.toLocaleString()}</span>
           </div>
+          {discountAmount > 0 && (
+            <div className="summary-row" style={{ color: '#ffb3b3' }}>
+              <span>Discount ({discountType === 'percent' ? `${discountValue}%` : 'Peso'}):</span>
+              <span>-₱{discountAmount.toLocaleString(undefined, { maximumFractionDigits: 2 })}</span>
+            </div>
+          )}
           <div className="summary-row total-row">
             <span>Total Amount:</span>
-            <span style={{ color: '#6366f1' }}>₱{total.toLocaleString()}</span>
+            <span style={{ color: '#8BA08E' }}>₱{total.toLocaleString(undefined, { maximumFractionDigits: 2 })}</span>
           </div>
         </div>
 
@@ -81,12 +139,16 @@ const PaymentModal = ({ booking, onConfirm, onCancel }) => {
           <button
             className="btn-done-res"
             onClick={() => onConfirm({
-              // FIXED: Sending objects with name AND price instead of just names
               services: selectedServices.map(s => ({
                 name: s.name,
                 price: s.price
               })),
               additionalFee: Number(extraFee) || 0,
+              discount: {
+                type: discountType,
+                value: Number(discountValue) || 0,
+                amount: discountAmount
+              },
               totalFee: total
             })}
             disabled={selectedServices.length === 0}
@@ -122,14 +184,19 @@ const ReceiptModal = ({ transaction, onPrint, onClose }) => (
         </div>
         <div className="r-display-item full-width">
           <span>Services Provided</span>
-          {/* Logic added to handle both string and object formats safely */}
           <p>
             {transaction.services?.map(s => (typeof s === 'object' ? s.name : s)).join(", ")}
           </p>
         </div>
+        {transaction.discount?.amount > 0 && (
+          <div className="r-display-item">
+            <span>Discount Applied</span>
+            <p>{transaction.discount.type === 'percent' ? `${transaction.discount.value}%` : `₱${transaction.discount.value}`} (-₱{transaction.discount.amount.toLocaleString(undefined, { maximumFractionDigits: 2 })})</p>
+          </div>
+        )}
         <div className="r-display-item total-highlight">
           <span>Total Paid</span>
-          <p>₱{transaction.totalFee.toLocaleString()}</p>
+          <p>₱{transaction.totalFee?.toLocaleString() || 0}</p>
         </div>
       </div>
 
@@ -146,7 +213,7 @@ const BookingModal = ({ date, onClose }) => {
   const [viewingBooking, setViewingBooking] = useState(null);
   const [isCheckout, setIsCheckout] = useState(false);
   const [transactionResult, setTransactionResult] = useState(null);
-  const [isExpanded, setIsExpanded] = useState(false); // For image zoom
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const allBookings = useQuery(api.bookings.getAllBookings) || [];
   const updateStatus = useMutation(api.admin.updateBookingStatus);
@@ -173,6 +240,7 @@ const BookingModal = ({ date, onClose }) => {
         phone: viewingBooking.phone || "N/A",
         services: paymentData.services,
         additionalFee: paymentData.additionalFee,
+        discount: paymentData.discount,
         totalFee: paymentData.totalFee,
         date: completedDate,
       });
@@ -230,6 +298,22 @@ const BookingModal = ({ date, onClose }) => {
             <InfoItem label="Facebook" value={viewingBooking.facebookName} />
             <InfoItem label="Phone" value={viewingBooking.phone} />
             <InfoItem label="Email" value={viewingBooking.email} />
+
+            <div className="info-item full-width">
+              <span>Client's Selected Services</span>
+              <div className="client-services-tags">
+                {Array.isArray(viewingBooking.services) && viewingBooking.services.length > 0
+                  ? viewingBooking.services.map((s, index) => {
+                      const serviceName = typeof s === 'object' ? s.name : s;
+                      return (
+                        <span key={index} className="service-tag">
+                          {serviceName}
+                        </span>
+                      );
+                    })
+                  : <p style={{ margin: 0, fontWeight: 600, color: '#2D3A3A' }}>None specified</p>}
+              </div>
+            </div>
 
             <div className="info-item">
               <span>Status</span>

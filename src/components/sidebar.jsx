@@ -6,6 +6,7 @@ import {
   faReceipt, 
   faList,
   faStar,
+  faBullhorn, // <--- Imported icon for Promo Popup
   faSignOutAlt 
 } from '@fortawesome/free-solid-svg-icons'; 
 import './sidebar.css';
@@ -60,6 +61,16 @@ const Sidebar = ({ activeTab, setActiveTab, onLogout }) => {
           >
             <FontAwesomeIcon icon={faStar} className="nav-icon" />
             <span className="nav-text">Reviews</span>
+          </button>
+
+          {/* PROMO MANAGER TAB */}
+          <button 
+            className={`nav-item ${activeTab === 'promo-manager' ? 'active' : ''}`}
+            onClick={() => setActiveTab('promo-manager')}
+            title="Promo Manager"
+          >
+            <FontAwesomeIcon icon={faBullhorn} className="nav-icon" />
+            <span className="nav-text">Promo Popup</span>
           </button>
 
           {/* CLOSED DAYS TAB */}
