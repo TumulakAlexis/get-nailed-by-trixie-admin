@@ -7,6 +7,36 @@
   --sidebar-transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* 1. Make the main sidebar a full-height flex container */
+.admin-sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Or 100% depending on your layout wrapper */
+  justify-content: space-between; /* Pushes top and bottom apart */
+  box-sizing: border-box;
+}
+
+/* 2. Allow the top section to grow and scroll if it gets too long */
+.sidebar-top-section {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow-y: auto; /* Adds a scrollbar if you add too many items */
+  min-height: 0; /* Critical for flex items to prevent overflow issues */
+}
+
+/* 3. Keep the nav items aligned nicely */
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 4. Ensure the footer stays fixed at the bottom and doesn't shrink */
+.sidebar-footer {
+  flex-shrink: 0;
+  margin-top: auto; /* Extra insurance to pin it to the bottom */
+  padding: 1rem 0; /* Adjust spacing as needed */
+}
 .admin-sidebar {
   width: 100px;
   height: 100vh;
