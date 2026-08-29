@@ -1,136 +1,70 @@
+:root {
+  --cal-border: #e2e8f0;
+  --cal-bg: #ffffff;
+  --cal-bg-disabled: #f8fafc;
+  --cal-text-main: #334155;
+  --cal-text-muted: #94a3b8;
+  --cal-primary: #0f172a;
+  --cal-today-bg: #3b82f6;
+  --cal-today-text: #ffffff;
+  
+  /* Tag Colors */
+  --tag-bg: #f1f5f9;
+  --tag-text: #334155;
+  --tag-blocked-bg: #fee2e2;
+  --tag-blocked-text: #dc2626;
+  --tag-vacant-bg: #ecfdf5;
+  --tag-vacant-text: #059669;
+
+  /* Status Dots */
+  --status-vacant: #10b981;
+  --status-busy: #f59e0b;
+  --status-occupied: #ef4444;
+}
+
 .calendar-container {
-  background: white;
-  border-radius: 8px;
+  background: var(--cal-bg);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   overflow: hidden;
-  border: 1px solid #eee;
-}
-
-.calendar-header-grid, .calendar-days-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-}
-
-.weekday-label {
-  padding: 15px;
-  font-size: 0.8rem;
-  color: #999;
-  font-weight: 600;
-  border-bottom: 1px solid #eee;
-}
-
-.calendar-day {
-  height: 120px;
-  padding: 10px;
-  border-right: 1px solid #eee;
-  border-bottom: 1px solid #eee;
-  background-color: #fff;
-}
-
-.calendar-day.disabled {
-  background-color: #f9f9f9;
-  color: #ccc;
-}
-
-.day-number-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
-.day-number {
-  font-size: 1.2rem;
-  font-weight: 500;
-  color: #444;
-}
-
-/* Status Dots from your image */
-.status-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  display: inline-block;
-}
-
-.calendar-name-container {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  margin-top: 5px;
-  overflow: hidden;
-}
-
-.calendar-name-tag {
-  font-size: 0.7rem;
-  font-weight: 700;
-  background: #f0f2f0; /* Very light sage/grey */
-  color: #2D3A3A;
-  padding: 2px 6px;
-  border-radius: 4px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis; /* Adds ... if the name is too long */
-  text-align: left;
-}
-
-/* Optional: style the "Blocked" tag differently */
-.calendar-name-tag:contains("Blocked") {
-  color: #8BA08E;
-  font-style: italic;
-}
-
-.calendar-day {
-  min-height: 100px; /* Ensure boxes are tall enough to show names */
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  padding: 10px;
-}
-
-/* --- Hover Effects --- */
-.calendar-day:not(.disabled) {
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-}
-
-.calendar-day:not(.disabled):hover {
-  background-color: #f7f9f7; /* Subtle sage-tinted white */
-  transform: translateY(-2px); /* Slight lift effect */
-  box-shadow: 0 4px 12px rgba(45, 58, 58, 0.08); /* Soft slate shadow */
-  z-index: 5;
-  border-radius: 4px;
-}
-
-/* Ensure the background stays consistent for disabled days */
-.calendar-day.disabled:hover {
-  cursor: default;
-  transform: none;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  border: 1px solid var(--cal-border);
 }
 
 .calendar-nav-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 20px;
-  background-color: #fff;
-  border-bottom: 1px solid #eee;
+  padding: 18px 24px;
+  background-color: var(--cal-bg);
+  border-bottom: 1px solid var(--cal-border);
 }
 
 .calendar-month-title {
-  font-family: 'serif', serif;
   font-size: 1.25rem;
-  color: #2D3A3A;
+  font-weight: 700;
+  color: var(--cal-primary);
   margin: 0;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+}
+
+.calendar-month-title span {
+  font-weight: 400;
+  color: var(--cal-text-muted);
+  margin-left: 6px;
+}
+
+.nav-actions {
+  display: flex;
+  gap: 8px;
 }
 
 .nav-btn {
-  background: #f0f2f0;
-  border: none;
-  color: #2D3A3A;
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
+  background: transparent;
+  border: 1px solid var(--cal-border);
+  color: var(--cal-text-main);
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -139,10 +73,139 @@
 }
 
 .nav-btn:hover {
-  background-color: #2D3A3A;
-  color: #fff;
+  background-color: var(--cal-bg-disabled);
 }
 
-.status-dot.vacant { background-color: #6FCF97; }   /* Green */
-.status-dot.busy { background-color: #eb9c57; }     /* Red */
-.status-dot.occupied { background-color: #EB5757; } /* Gray */
+/* --- FIXED & EVEN GRID SYSTEM --- */
+.calendar-grid-wrapper {
+  background-color: var(--cal-border);
+}
+
+.calendar-header-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  background-color: var(--cal-bg);
+  border-bottom: 1px solid var(--cal-border);
+}
+
+.weekday-label {
+  padding: 10px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--cal-text-muted);
+  font-weight: 600;
+  text-align: center;
+}
+
+.calendar-days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  /* Enforces uniform height across every row */
+  grid-auto-rows: 115px; 
+  gap: 1px;
+  background-color: var(--cal-border); 
+}
+
+/* --- TILE STYLING & CONTAINER QUERIES --- */
+.calendar-day {
+  background-color: var(--cal-bg);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow: hidden; /* Prevents overflow from stretching tiles */
+  container-type: inline-size; /* Enables responsive text scaling */
+}
+
+.calendar-day.disabled {
+  background-color: var(--cal-bg-disabled);
+}
+
+.calendar-day.clickable:hover {
+  cursor: pointer;
+  background-color: #f8fafc;
+}
+
+/* --- DAY HEADER --- */
+.day-number-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 26px;
+  margin-bottom: 4px;
+  flex-shrink: 0;
+}
+
+.day-number {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--cal-text-main);
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.today-highlight {
+  background-color: var(--cal-today-bg);
+  color: var(--cal-today-text);
+  box-shadow: 0 2px 5px rgba(59, 130, 246, 0.4);
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.status-dot.vacant { background-color: var(--status-vacant); }
+.status-dot.busy { background-color: var(--status-busy); }
+.status-dot.occupied { background-color: var(--status-occupied); }
+
+/* --- TAGS & AUTO-RESIZING TEXT --- */
+.calendar-name-container {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.calendar-name-tag {
+  /* Fluid font scaling: automatically adjusts text size to fit long words */
+  font-size: clamp(0.6rem, 8cqw, 0.72rem);
+  font-weight: 600;
+  padding: 3px 6px;
+  border-radius: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+.calendar-name-tag.tag-active {
+  background: var(--tag-bg);
+  color: var(--tag-text);
+}
+
+.calendar-name-tag.tag-blocked {
+  background: var(--tag-blocked-bg);
+  color: var(--tag-blocked-text);
+}
+
+.calendar-name-tag.tag-fully-occupied {
+  background: #fee2e2;
+  color: #991b1b;
+  text-align: center;
+  font-weight: 700;
+  padding: 6px 4px;
+}
+
+.calendar-name-tag.tag-vacant-info {
+  background: var(--tag-vacant-bg);
+  color: var(--tag-vacant-text);
+  border: 1px dashed rgba(16, 185, 129, 0.3);
+}

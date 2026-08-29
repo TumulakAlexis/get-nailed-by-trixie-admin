@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery } from "convex/react";
+import { format, parseISO, isValid } from "date-fns";
 import { api } from "../convex/_generated/api";
 import Sidebar from './components/sidebar';
 import StatCards from './components/statcards';
@@ -23,6 +24,17 @@ const AdminDashboard = ({ onLogout }) => {
   const bookings = useQuery(api.bookings.getAllBookings) || [];
 
   const getBookingsForDate = (date) => bookings.filter(b => b.date === date);
+
+  // --- DATE FORMATTING HELPER ---
+  const formatDateString = (dateStr) => {
+    if (!dateStr) return 'N/A';
+    const parsedDate = parseISO(dateStr);
+    if (isValid(parsedDate)) {
+      return format(parsedDate, 'MMMM d, yyyy');
+    }
+    const rawDate = new Date(dateStr);
+    return isValid(rawDate) ? format(rawDate, 'MMMM d, yyyy') : dateStr;
+  };
 
   // --- DERIVED DATA ---
   const pendingBookings = bookings.filter(
@@ -78,12 +90,16 @@ const AdminDashboard = ({ onLogout }) => {
                         >
                           <div className="pending-info">
                             <span className="client-name">{booking.name}</span>
-                            <span className="client-meta">{booking.date} • {booking.slot}</span>
+                            <span className="client-meta">
+                              {formatDateString(booking.date)} • {booking.slot}
+                            </span>
                           </div>
                           <button className="view-btn">View Details</button>
                         </div>
                       ))
                     )}
+                    {/* Increased Panel Scroll Spacer */}
+                    <div className="scroll-spacer" style={{ height: '120px', width: '100%' }}></div>
                   </div>
                 </div>
 
@@ -100,7 +116,9 @@ const AdminDashboard = ({ onLogout }) => {
                         <div key={tx._id} className="history-item">
                           <div className="history-info">
                             <span className="client-name">{tx.name}</span>
-                            <span className="client-meta">{tx.date} • ₱{tx.totalFee || 0}</span>
+                            <span className="client-meta">
+                              {formatDateString(tx.date)} • ₱{tx.totalFee || 0}
+                            </span>
                           </div>
                           <span className={`status-badge status-${tx.status}`}>
                             {tx.status}
@@ -108,10 +126,15 @@ const AdminDashboard = ({ onLogout }) => {
                         </div>
                       ))
                     )}
+                    {/* Increased Panel Scroll Spacer */}
+                    <div className="scroll-spacer" style={{ height: '120px', width: '100%' }}></div>
                   </div>
                 </div>
               </div>
             </div>
+            
+            {/* Extended Bottom Page Spacer */}
+            <div className="dashboard-bottom-spacer" style={{ height: '180px', width: '100%' }}></div>
           </>
         );
 
@@ -163,7 +186,7 @@ const AdminDashboard = ({ onLogout }) => {
         />
       )}
 
-      {/* Modernized Client Detail Modal */}
+      {/* Client Detail Modal */}
       {selectedBookingDetail && (
         <div className="modern-modal-overlay" onClick={() => setSelectedBookingDetail(null)}>
           <div className="modern-modal-card" onClick={(e) => e.stopPropagation()}>
@@ -211,7 +234,7 @@ const AdminDashboard = ({ onLogout }) => {
                 </div>
                 <div className="detail-card">
                   <span className="detail-card-header">Schedule</span>
-                  <p className="detail-primary-text">{selectedBookingDetail.date}</p>
+                  <p className="detail-primary-text">{formatDateString(selectedBookingDetail.date)}</p>
                   <p className="detail-secondary-text">{selectedBookingDetail.slot}</p>
                 </div>
               </div>
